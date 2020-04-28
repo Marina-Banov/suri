@@ -1,0 +1,9 @@
+<header class="navbar navbar-expand-lg navbar-light bg-light">
+    <span class="navbar-nav mr-auto nav-link active">Početna</span>
+    {% if user.is_authenticated %}
+        <span class="mr-3">{{ user }}</span>
+        <a href="{% url 'logout' %}" class="btn btn-primary">Odjava</a>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-primary">Prijava</a>
+    {% endif %}
+</header>
