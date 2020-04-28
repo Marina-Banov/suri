@@ -3,4 +3,8 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the index.")
+    return render(request, 'main_app/index.html')
+
+
+def question(request, question_id):
+    return HttpResponse("Question %s" % question_id)
