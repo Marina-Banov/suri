@@ -9,6 +9,7 @@
         <span class="mr-4">{{ user }}</span>
         <a href="{% url 'logout' %}" class="btn btn-primary mr-3">Odjava</a>
     {% else %}
-        <a href="{% url 'login' %}" class="btn btn-primary mr-3">Prijava</a>
+        <a href="{% url 'login' %}" class="btn btn-outline-primary">Prijava</a>
+        <a href="{% url 'register' %}" class="btn btn-outline-primary mx-3">Registracija</a>
     {% endif %}
 </header>

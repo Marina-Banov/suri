@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="d-flex align-items-center justify-content-center min-vh-100 bg-light">
+        <div class="container">
+            <div class="col-md-6 card card-body p-5 my-5">
+                <h1 class="mb-4">Registracija</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username" class="col-form-label">Korisničko ime</label>
+                        <input id="username" name="username" type="text" class="form-control"/>
+                        {{ form.username.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-form-label">E-mail</label>
+                        <input id="email" name="email" type="text" class="form-control"/>
+                        {{ form.email.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="password1" class="col-form-label">Lozinka</label>
+                        <input id="password1" name="password1" type="password" class="form-control"/>
+                        {{ form.password1.errors }}
+                        <small style="color: grey">{{ form.password1.help_text }}</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="password2" class="col-form-label">Ponovno upiši lozinku</label>
+                        <input id="password2" name="password2" type="password" class="form-control"/>
+                        {{ form.password2.errors }}
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3 px-4 float-right">Registriraj se</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
