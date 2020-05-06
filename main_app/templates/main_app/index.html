@@ -5,6 +5,12 @@
 
     <main>
         <h1>Hello world</h1>
+        {% for group in all_groups %}
+            <div>
+                <h3><a href="{% url 'groups' group_id=group.id %}">{{ group.group_name }}</a></h3>
+                <span>{{ group.field_name }}</span>
+            </div>
+        {% endfor %}
     </main>
 
 {% endblock %}

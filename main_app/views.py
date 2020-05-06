@@ -4,14 +4,23 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from main_app.forms import CustomUserCreationForm
+from main_app.models import Group
 
 
 def index(request):
-    return render(request, 'main_app/index.html')
+    all_groups = Group.objects.all()
+    context = {'all_groups': all_groups}
+    return render(request, 'main_app/index.html', context)
 
 
 def question(request, question_id):
     return HttpResponse("Question %s" % question_id)
+
+
+def groups(request, group_id):
+    group = Group.objects.get(id=group_id)
+    context = {'group': group}
+    return render(request, 'main_app/groups.html', context)
 
 
 class Register(generic.CreateView):
