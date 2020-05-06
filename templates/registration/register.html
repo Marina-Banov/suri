@@ -3,7 +3,7 @@
 {% block content %}
     <div class="d-flex align-items-center justify-content-center min-vh-100 bg-light">
         <div class="container">
-            <div class="col-md-6 card card-body p-5 my-5">
+            <div class="col-lg-6 card card-body p-5 my-5">
                 <h1 class="mb-4">Registracija</h1>
                 <form method="post">
                     {% csrf_token %}
@@ -28,7 +28,11 @@
                         <input id="password2" name="password2" type="password" class="form-control"/>
                         {{ form.password2.errors }}
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3 px-4 float-right">Registriraj se</button>
+                    <div class="d-flex align-items-center justify-content-end mt-4 mb-2">
+                        <a href="{% url 'login' %}">Već imaš račun?</a>
+                        <button type="submit" class="btn btn-primary ml-4 px-4">Registriraj se</button>
+                    </div>
+                    <a href="{% url 'index' %}">Natrag na početnu stranicu</a>
                 </form>
             </div>
         </div>
