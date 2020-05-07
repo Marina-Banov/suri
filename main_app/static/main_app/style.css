@@ -3,3 +3,21 @@ body {
     padding: 0;
     min-height: 100vh;
 }
+
+main .d-grid {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(auto-fit, 300px);
+    grid-gap: 2rem;
+}
+
+main .d-grid a,
+main .d-grid a .card {
+    height: 100%;
+}
+
+main a:hover .card,
+main a:focus .card {
+    background: #f8f9fa;
+    transition: 150ms;
+}
