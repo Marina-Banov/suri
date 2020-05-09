@@ -3,16 +3,43 @@
 {% block content %}
     {% include 'header.html' %}
 
-    <main class="mx-5 py-5">
+    <main class="container py-5">
         <h2>{{ question.title }}</h2>
-        <p class="text-secondary mb-4">{{ question.user }}, {{ question.date|date:'j. E Y. H:i' }}</p>
+        <p class="text-secondary mb-4">
+            {{ question.user }}, {{ question.date|date:'j. E Y. H:i' }}
+            <br>
+            <a href="{% url 'groups' group_id=question.group.id %}">
+                {{ question.group }}
+            </a>
+        </p>
         <p class="mb-5">{{ question.description }}</p>
         {% for answer in answers %}
-            <div class="card p-4 mx-5">
-                <p class="text-secondary">{{ answer.user }}, {{ answer.date|date:'j. E Y. H:i' }}</p>
-                {{ answer.description }}
-                <i class="fas fa-check"></i>
-            </div>
+            <div class="card container my-4">
+            <div class="row p-4">
+                <div class="col-sm-10">
+                    <p class="text-secondary">{{ answer.user }}, {{ answer.date|date:'j. E Y. H:i' }}</p>
+                    {{ answer.description }}
+                </div>
+                <div class="col-sm-2 text-center">
+                    <i class="fas fa-check text-primary pb-3"></i>
+                    <br>
+                    <button class="btn btn-light">
+                        <i class="fas fa-caret-up"></i>
+                        {{ answer.likes_count }}
+                    </button>
+                    <button class="btn btn-light">
+                        <i class="fas fa-caret-down"></i>
+                        {{ answer.dislikes_count }}
+                    </button>
+                </div>
+            </div></div>
         {% endfor %}
+        {% if user.is_autheticated %}
+        {% else %}
+            <i class="text-secondary">
+                Da biste odgovorili na ovo pitanje ili ostavili komentar, molimo
+                <a href="{% url 'login' %}">prijavite se</a> ili <a href="{% url 'register' %}">registrirajte</a>.
+            </i>
+        {% endif %}
     </main>
 {% endblock %}
