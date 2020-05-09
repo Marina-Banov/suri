@@ -3,7 +3,13 @@
 {% block content %}
     {% include 'header.html' %}
 
-    <main>
+    <main class="mx-5 py-5">
         <h1>{{ group.group_name }}</h1>
+        <span class="badge badge-pill badge-primary mt-2 mb-4">{{ group.field_name }}</span>
+        {% for question in questions %}
+            <p><a href="{% url 'question' question_id=question.id %}">
+                {{ question }}
+            </a></p>
+        {% endfor %}
     </main>
 {% endblock %}

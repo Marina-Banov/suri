@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from main_app.forms import CustomUserCreationForm
-from main_app.models import Group
+from main_app.models import Group, Question
 
 
 def index(request):
@@ -19,7 +19,11 @@ def question(request, question_id):
 
 def groups(request, group_id):
     group = Group.objects.get(id=group_id)
-    context = {'group': group}
+    questions = Question.objects.filter(group=group_id)
+    context = {
+        'group': group,
+        'questions': questions
+    }
     return render(request, 'main_app/groups.html', context)
 
 
