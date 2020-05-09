@@ -8,10 +8,10 @@
         </nav>
         {% if user.is_authenticated %}
             <span class="mr-4">{{ user }}</span>
-            <a href="{% url 'logout' %}" class="btn btn-primary mr-3">Odjava</a>
+            <a href="{% url 'logout' %}?next={{request.path}}" class="btn btn-outline-primary mr-3">Odjava</a>
         {% else %}
-            <a href="{% url 'login' %}" class="btn btn-outline-primary">Prijava</a>
-            <a href="{% url 'register' %}" class="btn btn-outline-primary mx-3">Registracija</a>
+            <a href="{% url 'login' %}?next={{request.path}}" class="btn btn-outline-primary">Prijava</a>
+            <a href="{% url 'register' %}?next={{request.path}}" class="btn btn-outline-primary mx-3">Registracija</a>
         {% endif %}
     </div>
 </header>

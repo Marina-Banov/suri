@@ -34,11 +34,13 @@
                 </div>
             </div></div>
         {% endfor %}
-        {% if user.is_autheticated %}
+        {% if user.is_authenticated %}
+
         {% else %}
             <i class="text-secondary">
                 Da biste odgovorili na ovo pitanje ili ostavili komentar, molimo
-                <a href="{% url 'login' %}">prijavite se</a> ili <a href="{% url 'register' %}">registrirajte</a>.
+                <a href="{% url 'login' %}?next={{request.path}}">prijavite se</a> ili
+                <a href="{% url 'register' %}?next={{request.path}}">registrirajte</a>.
             </i>
         {% endif %}
     </main>

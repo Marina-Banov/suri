@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
-from main_app.forms import CustomUserCreationForm
+from main_app.forms import CustomUserCreationForm, QuestionForm
 from main_app.models import Group, Question, Answer
 
 
@@ -31,6 +31,15 @@ def groups(request, group_id):
         'questions': questions
     }
     return render(request, 'main_app/groups.html', context)
+
+
+class AskQuestion(generic.CreateView):
+    form_class = QuestionForm
+    template_name = 'main_app/ask_question.html'
+
+    def form_valid(self, form):
+        print(self.request.POST['user'])
+        return HttpResponseRedirect(reverse('question', kwargs={'question_id': 1}))
 
 
 class Register(generic.CreateView):
