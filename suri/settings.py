@@ -119,7 +119,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static/bootstrap-4.3.1-css')]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static/bootstrap-4.3.1-css'),
+    os.path.join(BASE_DIR, 'static/fontawesome-free-5.13.0-web')
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
