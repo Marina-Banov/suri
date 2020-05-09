@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'header.html' %}
+
+    <main class="mx-5 py-5">
+        <h2>{{ question.title }}</h2>
+        <p class="text-secondary mb-4">{{ question.user }}, {{ question.date|date:'j. E Y. H:i' }}</p>
+        <p class="mb-5">{{ question.description }}</p>
+        {% for answer in answers %}
+            <div class="card p-4 mx-5">
+                <p class="text-secondary">{{ answer.user }}, {{ answer.date|date:'j. E Y. H:i' }}</p>
+                {{ answer.description }}
+            </div>
+        {% endfor %}
+    </main>
+{% endblock %}

@@ -23,7 +23,7 @@ class Group(models.Model):
 class Question(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True)
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=2048, null=True)
     # the images themselves aren't saved to the database, just the pathway to the image
@@ -37,7 +37,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True)
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=2048)
     image = models.FileField(upload_to='images/', null=True, verbose_name="")
     accepted = models.BooleanField(default=False)
