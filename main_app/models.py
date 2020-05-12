@@ -28,7 +28,7 @@ class Question(models.Model):
     description = models.CharField(max_length=2048, null=True)
     # the images themselves aren't saved to the database, just the pathway to the image
     # the images are stored in the media directory of the project
-    image = models.FileField(upload_to='images/', null=True, verbose_name="")
+    image = models.FileField(upload_to='images/', null=True, blank=True, verbose_name="")
 
     def __str__(self):
         return self.title
@@ -39,7 +39,7 @@ class Answer(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True)
     date = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=2048)
-    image = models.FileField(upload_to='images/', null=True, verbose_name="")
+    image = models.FileField(upload_to='images/', null=True, blank=True, verbose_name="")
     accepted = models.BooleanField(default=False)
     likes_count = models.IntegerField(null=True)
     dislikes_count = models.IntegerField(null=True)

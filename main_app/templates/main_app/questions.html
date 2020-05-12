@@ -8,7 +8,7 @@
         <p class="text-secondary mb-4">
             {{ question.user }}, {{ question.date|date:'j. E Y. H:i' }}
             <br>
-            <a href="{% url 'groups' group_id=question.group.id %}">
+            <a href="{% url 'groups' question.group.id %}">
                 {{ question.group }}
             </a>
         </p>

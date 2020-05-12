@@ -9,13 +9,20 @@
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="username" class="col-form-label">Korisničko ime</label>
-                        <input id="username" name="username" type="text" class="form-control"/>
-                        {{ form.username.errors }}
+                        <input id="username" name="username" type="text"
+                               class="form-control {%if form.username.errors %}is-invalid{%endif%}"
+                               {% if form.username.value %} value="{{ form.username.value }}" {% endif %}/>
+                        <div class="text-danger">
+                            {{ form.username.errors }}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="username" class="col-form-label text-center">Lozinka</label>
-                        <input id="password" name="password" type="password" class="form-control"/>
-                        {{ form.password.errors }}
+                        <input id="password" name="password" type="password"
+                               class="form-control {%if form.password.errors %}is-invalid{%endif%}"/>
+                        <div class="text-danger">
+                            {{ form.password.errors }}
+                        </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-end mt-4 mb-2">
                         <a href="{% url 'register' %}">Nemaš račun?</a>
