@@ -38,9 +38,15 @@ class AskQuestion(generic.CreateView):
     template_name = 'main_app/ask_question.html'
 
     def form_valid(self, form):
-        print(self.kwargs['group_id'])
-        print(self.request.user.id)
-        return HttpResponseRedirect(reverse('question', kwargs={'question_id': 1}))
+        b = Question(
+            group=Group.objects.get(id=self.kwargs['group_id']),
+            user=self.request.user,
+            title=form.cleaned_data['title'],
+            description=form.cleaned_data['description'],
+            image=form.cleaned_data['image']
+        )
+        b.save()
+        return HttpResponseRedirect(reverse('question', kwargs={'question_id': b.id}))
 
 
 class Register(generic.CreateView):

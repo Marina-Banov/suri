@@ -19,7 +19,7 @@
                 <label for="description" class="col-form-label text-center">Opis</label>
                 <textarea id="description" name="description" rows="7"
                           class="form-control {%if form.description.errors %}is-invalid{%endif%}"
-                >{% if form.description.value %} {{ form.description.value }} {% endif %}</textarea>
+                >{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
                 <div class="text-danger">
                     {{ form.description.errors }}
                 </div>
