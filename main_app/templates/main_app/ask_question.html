@@ -5,9 +5,35 @@
 
     <main class="container py-5">
         <form method="post">
-             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary ml-4 px-4">Dodaj</button>
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title" class="col-form-label">Naslov</label>
+                <input id="title" name="title" type="text"
+                       class="form-control {%if form.title.errors %}is-invalid{%endif%}"
+                       {% if form.title.value %} value="{{ form.title.value }}" {% endif %}/>
+                <div class="text-danger">
+                    {{ form.title.errors }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description" class="col-form-label text-center">Opis</label>
+                <textarea id="description" name="description" rows="7"
+                          class="form-control {%if form.description.errors %}is-invalid{%endif%}"
+                >{% if form.description.value %} {{ form.description.value }} {% endif %}</textarea>
+                <div class="text-danger">
+                    {{ form.description.errors }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="image" class="col-form-label text-center">Možeš svom pitanju dodati sliku:</label>
+                <input id="image" name="image" class="form-control-file" type="file"/>
+                <div class="text-danger">
+                    {{ form.image.errors }}
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end mt-4 mb-2">
+                <button type="submit" class="btn btn-primary ml-4 px-4">Postavi pitanje</button>
+            </div>
         </form>
     </main>
 {% endblock %}

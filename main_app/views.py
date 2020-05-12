@@ -38,7 +38,8 @@ class AskQuestion(generic.CreateView):
     template_name = 'main_app/ask_question.html'
 
     def form_valid(self, form):
-        print(self.request.POST['user'])
+        print(self.kwargs['group_id'])
+        print(self.request.user.id)
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': 1}))
 
 
@@ -52,4 +53,4 @@ class Register(generic.CreateView):
         password = self.request.POST['password1']
         user = authenticate(username=username, password=password)
         login(self.request, user)
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(self.request.POST.get('next', '/'))

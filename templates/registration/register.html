@@ -32,6 +32,7 @@
                         <a href="{% url 'login' %}">Već imaš račun?</a>
                         <button type="submit" class="btn btn-primary ml-4 px-4">Registriraj se</button>
                     </div>
+                    <input type="hidden" name="next" value="{{ request.GET.next }}">
                     <a href="{% url 'index' %}">Natrag na početnu stranicu</a>
                 </form>
             </div>

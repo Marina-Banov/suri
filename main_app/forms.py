@@ -22,4 +22,4 @@ class QuestionForm(ModelForm):
 
     class Meta:
         model = Question
-        fields = ('group', 'user', 'title', 'description')
+        fields = ('title', 'description', 'image')
