@@ -4,6 +4,17 @@
     {% include 'header.html' %}
 
     <main class="container py-5">
+    <!--
+    <form method="post" id="formOne">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="formOne">
+        <button type="submit">1</button>
+    </form>
+    <form method="post" id="formTwo">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="formTwo">
+        <button type="submit">2</button>
+    </form>-->
         <h2>{{ question.title }}</h2>
         <p class="text-secondary mb-4">
             {{ question.user }}, {{ question.date|date:'j. E Y. H:i' }}
@@ -25,15 +36,18 @@
                 </div>
                 <div class="col-sm-2 text-center">
                     <i class="fas fa-check text-primary pb-3"></i>
-                    <br>
-                    <button class="btn btn-light">
-                        <i class="fas fa-caret-up"></i>
-                        {{ answer.likes_count }}
-                    </button>
-                    <button class="btn btn-light">
-                        <i class="fas fa-caret-down"></i>
-                        {{ answer.dislikes_count }}
-                    </button>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="answer" value="{{ answer.id }}">
+                        <button class="btn btn-light" type="submit" name="like">
+                            <i class="fas fa-caret-up"></i>
+                            {{ answer.likes_count }}
+                        </button>
+                        <button class="btn btn-light" type="submit" name="dislike">
+                            <i class="fas fa-caret-down"></i>
+                            {{ answer.dislikes_count }}
+                        </button>
+                    </form>
                 </div>
             </div></div>
         {% endfor %}

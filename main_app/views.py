@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from main_app.forms import CustomUserCreationForm, QuestionForm
-from main_app.models import Group, Question, Answer
+from main_app.models import Group, Question, Answer, AnswerReview
 
 
 def index(request):
@@ -14,6 +14,30 @@ def index(request):
 
 
 def question(request, question_id):
+    """
+    if request.method == 'POST':
+        if request.POST.get("form_type") == 'formOne':
+            print(1)
+        elif request.POST.get("form_type") == 'formTwo':
+            print(2)
+    """
+    if 'like' in request.POST:
+        r = AnswerReview(
+            user=request.user,
+            answer=Answer.objects.get(id=request.POST.get('answer')),
+            review=1
+        )
+        r.save()
+        r.answer.update_likes(_id=r.answer.id)
+    elif 'dislike' in request.POST:
+        r = AnswerReview(
+            user=request.user,
+            answer=Answer.objects.get(id=request.POST.get('answer')),
+            review=-1
+        )
+        r.save()
+        r.answer.update_likes(_id=r.answer.id)
+
     q = Question.objects.get(id=question_id)
     answers = Answer.objects.filter(question_id=question_id)
     context = {

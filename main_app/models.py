@@ -44,6 +44,13 @@ class Answer(models.Model):
     likes_count = models.IntegerField(null=True)
     dislikes_count = models.IntegerField(null=True)
 
+    @classmethod
+    def update_likes(cls, _id):
+        obj = cls.objects.get(id=_id)
+        obj.likes_count = AnswerReview.objects.filter(answer=obj, review=1).count()
+        obj.dislikes_count = AnswerReview.objects.filter(answer=obj, review=-1).count()
+        obj.save()
+
     def __str__(self):
         return self.question.title + ': ' + self.description
 
