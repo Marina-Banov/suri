@@ -37,6 +37,11 @@ class AskQuestion(generic.CreateView):
     form_class = QuestionForm
     template_name = 'main_app/ask_question.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['group'] = Group.objects.get(id=self.kwargs['group_id']),
+        return context
+
     def form_valid(self, form):
         b = Question(
             group=Group.objects.get(id=self.kwargs['group_id']),

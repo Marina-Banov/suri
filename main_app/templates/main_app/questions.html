@@ -12,7 +12,10 @@
                 {{ question.group }}
             </a>
         </p>
-        <p class="mb-5">{{ question.description }}</p>
+        <div class="mb-5">
+            <p>{{ question.description }}</p>
+            {% if question.image %}<img src="{{ question.image.url }}">{% endif %}
+        </div>
         {% for answer in answers %}
             <div class="card container my-4">
             <div class="row p-4">
