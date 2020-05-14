@@ -36,18 +36,11 @@
                 </div>
                 <div class="col-sm-2 text-center">
                     <i class="fas fa-check text-primary pb-3"></i>
-                    <form method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="answer" value="{{ answer.id }}">
-                        <button class="btn btn-light" type="submit" name="like">
-                            <i class="fas fa-caret-up"></i>
-                            {{ answer.likes_count }}
-                        </button>
-                        <button class="btn btn-light" type="submit" name="dislike">
-                            <i class="fas fa-caret-down"></i>
-                            {{ answer.dislikes_count }}
-                        </button>
-                    </form>
+                    {% if user.is_authenticated %}
+                        {% include 'main_app/like_form.html' %}
+                    {% else %}
+                        {% include 'main_app/like_buttons.html' %}
+                    {% endif %}
                 </div>
             </div></div>
         {% endfor %}

@@ -41,21 +41,25 @@ class Answer(models.Model):
     description = models.CharField(max_length=2048)
     image = models.FileField(upload_to='images/', null=True, blank=True, verbose_name="")
     accepted = models.BooleanField(default=False)
-    likes_count = models.IntegerField(null=True)
-    dislikes_count = models.IntegerField(null=True)
 
-    @classmethod
-    def update_likes(cls, _id):
-        obj = cls.objects.get(id=_id)
-        obj.likes_count = AnswerReview.objects.filter(answer=obj, review=1).count()
-        obj.dislikes_count = AnswerReview.objects.filter(answer=obj, review=-1).count()
-        obj.save()
+    @property
+    def likes_count(self):
+        return AnswerReview.objects.filter(answer=self, review=1).count()
+
+    @property
+    def dislikes_count(self):
+        return AnswerReview.objects.filter(answer=self, review=-1).count()
 
     def __str__(self):
         return self.question.title + ': ' + self.description
 
 
 class AnswerReview(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True)
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, related_name='user_like_key', null=True)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='answer_like_key')
     review = models.IntegerField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'answer'], name='uniqueAnswerReview')
+        ]

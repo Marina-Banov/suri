@@ -1,0 +1,25 @@
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="answer" value="{{ answer.id }}">
+    {% load main_extras %}
+    <button type="submit" name="like"
+            class="btn
+            {% if answer.answer_like_key.all|review:1|user:user %}
+                btn-success
+            {% else %}
+                btn-light
+            {% endif %}">
+        <i class="fas fa-caret-up"></i>
+        {{ answer.likes_count }}
+    </button>
+    <button type="submit" name="dislike"
+            class="btn
+            {% if answer.answer_like_key.all|review:-1|user:user %}
+                btn-danger
+            {% else %}
+                btn-light
+            {% endif %}">
+        <i class="fas fa-caret-down"></i>
+        {{ answer.dislikes_count }}
+    </button>
+</form>
