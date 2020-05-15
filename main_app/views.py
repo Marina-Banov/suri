@@ -1,9 +1,10 @@
+from bootstrap_modal_forms.generic import BSModalCreateView
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic
-from main_app.forms import CustomUserCreationForm, QuestionForm
+from main_app.forms import CustomUserCreationForm, QuestionForm, AnswerForm
 from main_app.views_helpers import like
 from main_app.models import Group, Question, Answer
 
@@ -74,3 +75,10 @@ class Register(generic.CreateView):
         user = authenticate(username=username, password=password)
         login(self.request, user)
         return HttpResponseRedirect(self.request.POST.get('next', '/'))
+
+
+class AnswerView(BSModalCreateView):
+    template_name = 'main_app/give_answer.html'
+    form_class = AnswerForm
+    success_message = 'Success: Book was created.'
+    success_url = reverse_lazy('index')

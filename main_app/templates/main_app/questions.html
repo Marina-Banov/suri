@@ -3,6 +3,12 @@
 {% block content %}
     {% include 'header.html' %}
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
+      </div>
+    </div>
+
     <main class="container py-5">
     <!--
     <form method="post" id="formOne">
@@ -25,7 +31,7 @@
         </p>
         <div class="mb-5">
             <p>{{ question.description }}</p>
-            {% if question.image %}<img src="{{ question.image.url }}">{% endif %}
+            {% if question.image %}<img src="{{ question.image.url }}" alt="">{% endif %}
         </div>
         {% for answer in answers %}
             <div class="card container my-4">
@@ -34,9 +40,9 @@
                     <p class="text-secondary">{{ answer.user }}, {{ answer.date|date:'j. E Y. H:i' }}</p>
                     {{ answer.description }}
                 </div>
-                <div class="col-sm-2 text-center">
+                <div class="col-sm-2 text-center" id="answer_stats">
                     <i class="fas fa-check text-primary pb-3"></i>
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated and answer.user != user %}
                         {% include 'main_app/like_form.html' %}
                     {% else %}
                         {% include 'main_app/like_buttons.html' %}
@@ -45,7 +51,7 @@
             </div></div>
         {% endfor %}
         {% if user.is_authenticated %}
-
+            <button class="create-book">Create</button>
         {% else %}
             <i class="text-secondary">
                 Da biste odgovorili na ovo pitanje ili ostavili komentar, molimo
@@ -54,4 +60,16 @@
             </i>
         {% endif %}
     </main>
+
+    {% load static %}
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".create-book").modalForm({
+                formURL: "{% url 'answer' %}"
+            });
+        });
+    </script>
 {% endblock %}
