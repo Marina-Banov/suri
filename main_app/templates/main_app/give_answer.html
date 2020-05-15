@@ -1,36 +1,15 @@
-
-
 <form method="post" action="">
   {% csrf_token %}
 
  <div class="modal-header">
-    <h5 class="modal-title">Create new Book</h5>
+    <h5 class="modal-title">Komentiraj</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
 
   <div class="modal-body">
-    {% for field in form %}
-      <div class="form-group{% if field.errors %} invalid{% endif %}">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-        {% for error in field.errors %}
-          <p class="help-block">{{ error }}</p>
-        {% endfor %}
-      </div>
-    {% endfor %}
-  </div>
-
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="submit-btn btn btn-primary">Create</button>
-  </div>
-
-</form>
-
-<!--<form class="container-fluid bg-primary p-5">
-   <div class="form-group">
+    <div class="form-group">
         <textarea id="description" name="description" rows="7"
                   class="form-control {%if form.description.errors %}is-invalid{%endif%}"
         >{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
@@ -49,7 +28,11 @@
             {{ form.image.errors }}
         </div>
     </div>
-    <div class="d-flex align-items-center justify-content-end mt-4 mb-2">
-        <button type="submit" class="btn btn-primary ml-4 px-4">Odgovori na pitanje</button>
-    </div>
-</form>-->
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-default" data-dismiss="modal">Zatvori</button>
+    <button type="submit" class="submit-btn btn btn-primary">Komentiraj</button>
+  </div>
+
+</form>

@@ -9,5 +9,5 @@ urlpatterns = [
     path('<int:question_id>/', views.question, name='question'),
     path('groups/<int:group_id>/', views.groups, name='groups'),
     path('ask_question/<int:group_id>/', login_required(views.AskQuestion.as_view()), name='ask_question'),
-    path('answer/', views.AnswerView.as_view(), name='answer'),
+    path('answer/<int:question_id>/', views.AnswerView.as_view(), name='answer'),
 ]

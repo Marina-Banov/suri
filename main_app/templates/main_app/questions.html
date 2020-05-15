@@ -51,7 +51,10 @@
             </div></div>
         {% endfor %}
         {% if user.is_authenticated %}
-            <button class="create-book">Create</button>
+            <button id="add-comment-btn" class="btn btn-primary">
+                <i class="fas fa-reply fa-rotate-180 pl-2"></i>
+                Komentiraj
+            </button>
         {% else %}
             <i class="text-secondary">
                 Da biste odgovorili na ovo pitanje ili ostavili komentar, molimo
@@ -67,8 +70,8 @@
     <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $(".create-book").modalForm({
-                formURL: "{% url 'answer' %}"
+            $("#add-comment-btn").modalForm({
+                formURL: "{% url 'answer' question.id %}"
             });
         });
     </script>

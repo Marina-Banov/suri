@@ -30,4 +30,4 @@ class AnswerForm(BSModalForm):
 
     class Meta:
         model = Answer
-        fields = '__all__'
+        fields = ('description', 'image')

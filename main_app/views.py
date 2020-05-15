@@ -64,6 +64,21 @@ class AskQuestion(generic.CreateView):
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': b.id}))
 
 
+class AnswerView(BSModalCreateView):
+    form_class = AnswerForm
+    template_name = 'main_app/give_answer.html'
+
+    def form_valid(self, form):
+        a = Answer(
+            question=Question.objects.get(id=self.kwargs['question_id']),
+            user=self.request.user,
+            description=form.cleaned_data['description'],
+            image=form.cleaned_data['image']
+        )
+        a.save()    # TODO saves answer twice???
+        return HttpResponseRedirect(reverse('question', kwargs={'question_id': a.question.id}))
+
+
 class Register(generic.CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/register.html'
@@ -75,10 +90,3 @@ class Register(generic.CreateView):
         user = authenticate(username=username, password=password)
         login(self.request, user)
         return HttpResponseRedirect(self.request.POST.get('next', '/'))
-
-
-class AnswerView(BSModalCreateView):
-    template_name = 'main_app/give_answer.html'
-    form_class = AnswerForm
-    success_message = 'Success: Book was created.'
-    success_url = reverse_lazy('index')
