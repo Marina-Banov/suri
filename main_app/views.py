@@ -25,18 +25,21 @@ def group(request, group_id):
 
 
 def question(request, question_id):
-    if request.method == 'POST':
-        r = AnswerReview()
-        r.user = request.user
-        r.answer = Answer.objects.get(id=request.POST.get('answer'))
-        if 'like' in request.POST:
-            r.review = 1
-        else:
-            r.review = -1
+    if request.method == 'POST' and request.POST.get('form_type') == 'review':
+        r = AnswerReview(
+            user=request.user,
+            answer=Answer.objects.get(id=request.POST.get('answer')),
+            review=1 if 'like' in request.POST else -1
+        )
         try:
             r.save()
         except IntegrityError:
             AnswerReview.objects.get(user=r.user, answer=r.answer).delete()
+    elif request.method == 'POST' and request.POST.get('form_type') == 'accept':
+        q = Question.objects.get(id=question_id)
+        a = Answer.objects.get(id=request.POST.get('answer'))
+        q.accepted_answer = None if q.accepted_answer == a else a
+        q.save()
 
     context = {
         'question': Question.objects.get(id=question_id),
