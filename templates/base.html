@@ -14,5 +14,24 @@
 <body>
     {% block content %}
     {% endblock %}
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
+      </div>
+    </div>
+
+    <script src="{% static 'jquery.min.js' %}"></script>
+    <script src="{% static 'popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+    <script src="{% static 'jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            {% if '/question/' in request.path %}
+                $('#add-comment-btn').modalForm({ formURL: "{% url 'create_answer' question.id %}" });
+            {% endif %}
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+    </script>
 </body>
 </html>

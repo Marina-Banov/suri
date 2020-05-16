@@ -26,13 +26,17 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="password1" class="col-form-label">Lozinka</label>
+                        <label for="password1" class="col-form-label d-flex justify-content-between align-items-end">
+                            Lozinka
+                            <button type="button" class="btn py-0" data-toggle="tooltip" data-placement="right" data-html="true" title="{{ form.password1.help_text }}">
+                                <i class="fas fa-info-circle text-primary"></i>
+                            </button>
+                        </label>
                         <input id="password1" name="password1" type="password"
                                class="form-control {%if form.password1.errors or form.password2.errors %}is-invalid{%endif%}"/>
                         <div class="text-danger">
                             {{ form.password1.errors }}
                         </div>
-                        <small class="text-secondary">{{ form.password1.help_text }}</small>
                     </div>
                     <div class="form-group">
                         <label for="password2" class="col-form-label">Ponovno upiši lozinku</label>
