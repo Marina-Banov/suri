@@ -1,51 +1,53 @@
 from bootstrap_modal_forms.generic import BSModalCreateView
 from django.contrib.auth import authenticate, login
+from django.db import IntegrityError
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.views import generic
 from main_app.forms import CustomUserCreationForm, QuestionForm, AnswerForm
-from main_app.views_helpers import like
-from main_app.models import Group, Question, Answer
+from main_app.models import Group, Question, Answer, AnswerReview
 
 
 def index(request):
-    all_groups = Group.objects.all()
-    context = {'all_groups': all_groups}
+    context = {
+        'all_groups': Group.objects.all()
+    }
     return render(request, 'main_app/index.html', context)
 
 
+def group(request, group_id):
+    context = {
+        'group': Group.objects.get(id=group_id),
+        'questions': Question.objects.filter(group=group_id)
+    }
+    return render(request, 'main_app/group.html', context)
+
+
 def question(request, question_id):
-    """
     if request.method == 'POST':
-        if request.POST.get("form_type") == 'formOne':
-            print(1)
-        elif request.POST.get("form_type") == 'formTwo':
-            print(2)
-    """
-    if request.method == 'POST':
-        like(request)
+        r = AnswerReview()
+        r.user = request.user
+        r.answer = Answer.objects.get(id=request.POST.get('answer'))
+        if 'like' in request.POST:
+            r.review = 1
+        else:
+            r.review = -1
+        try:
+            r.save()
+        except IntegrityError:
+            AnswerReview.objects.get(user=r.user, answer=r.answer).delete()
 
     context = {
         'question': Question.objects.get(id=question_id),
         'answers': Answer.objects.filter(question_id=question_id)
     }
-    return render(request, 'main_app/questions.html', context)
+    return render(request, 'main_app/question.html', context)
 
 
-def groups(request, group_id):
-    group = Group.objects.get(id=group_id)
-    questions = Question.objects.filter(group=group_id)
-    context = {
-        'group': group,
-        'questions': questions
-    }
-    return render(request, 'main_app/groups.html', context)
-
-
-class AskQuestion(generic.CreateView):
+class CreateQuestionView(generic.CreateView):
     form_class = QuestionForm
-    template_name = 'main_app/ask_question.html'
+    template_name = 'main_app/create_question.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -64,9 +66,9 @@ class AskQuestion(generic.CreateView):
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': b.id}))
 
 
-class AnswerView(BSModalCreateView):
+class CreateAnswerView(BSModalCreateView):
     form_class = AnswerForm
-    template_name = 'main_app/give_answer.html'
+    template_name = 'main_app/create_answer.html'
 
     def form_valid(self, form):
         a = Answer(

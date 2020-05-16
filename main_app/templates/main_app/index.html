@@ -6,7 +6,7 @@
     <main class="container py-5">
         <div class="d-grid">
         {% for group in all_groups %}
-            <a class="text-decoration-none text-center" href="{% url 'groups' group.id %}">
+            <a class="text-decoration-none text-center" href="{% url 'group' group.id %}">
             <div class="card px-4 py-5 justify-content-center">
                 <h3>{{ group.group_name }}</h3>
                 <span class="badge badge-pill badge-primary m-2 no-underline">{{ group.field_name }}</span>

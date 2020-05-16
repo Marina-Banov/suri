@@ -3,36 +3,21 @@
 {% block content %}
     {% include 'header.html' %}
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content"></div>
-      </div>
-    </div>
-
     <main class="container py-5">
-    <!--
-    <form method="post" id="formOne">
-        {% csrf_token %}
-        <input type="hidden" name="form_type" value="formOne">
-        <button type="submit">1</button>
-    </form>
-    <form method="post" id="formTwo">
-        {% csrf_token %}
-        <input type="hidden" name="form_type" value="formTwo">
-        <button type="submit">2</button>
-    </form>-->
         <h2>{{ question.title }}</h2>
         <p class="text-secondary mb-4">
             {{ question.user }}, {{ question.date|date:'j. E Y. H:i' }}
             <br>
-            <a href="{% url 'groups' question.group.id %}">
+            <a href="{% url 'group' question.group.id %}">
                 {{ question.group }}
             </a>
         </p>
+
         <div class="mb-5">
             <p>{{ question.description }}</p>
             {% if question.image %}<img src="{{ question.image.url }}" alt="">{% endif %}
         </div>
+
         {% for answer in answers %}
             <div class="card container my-4">
             <div class="row p-4">
@@ -44,13 +29,23 @@
                 <div class="col-sm-2 text-center" id="answer_stats">
                     <i class="fas fa-check text-primary pb-3"></i>
                     {% if user.is_authenticated and answer.user != user %}
-                        {% include 'main_app/like_form.html' %}
+                        {% include 'main_app/create_review.html' %}
                     {% else %}
-                        {% include 'main_app/like_buttons.html' %}
+                        <div>
+                            <button class="btn btn-light" disabled>
+                                <i class="fas fa-caret-up"></i>
+                                {{ answer.likes_count }}
+                            </button>
+                            <button class="btn btn-light" disabled>
+                                <i class="fas fa-caret-down"></i>
+                                {{ answer.dislikes_count }}
+                            </button>
+                        </div>
                     {% endif %}
                 </div>
             </div></div>
         {% endfor %}
+
         {% if user.is_authenticated %}
             <button id="add-comment-btn" class="btn btn-primary">
                 <i class="fas fa-reply fa-rotate-180 pl-2"></i>
@@ -65,15 +60,5 @@
         {% endif %}
     </main>
 
-    {% load static %}
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#add-comment-btn").modalForm({
-                formURL: "{% url 'answer' question.id %}"
-            });
-        });
-    </script>
+    {% include 'main_app/modal.html' %}
 {% endblock %}

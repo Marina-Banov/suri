@@ -6,8 +6,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('register/', views.Register.as_view(), name='register'),
-    path('<int:question_id>/', views.question, name='question'),
-    path('groups/<int:group_id>/', views.groups, name='groups'),
-    path('ask_question/<int:group_id>/', login_required(views.AskQuestion.as_view()), name='ask_question'),
-    path('answer/<int:question_id>/', views.AnswerView.as_view(), name='answer'),
+    path('group/<int:group_id>/', views.group, name='group'),
+    path('question/<int:question_id>/', views.question, name='question'),
+    path('create_question/<int:group_id>/', login_required(views.CreateQuestionView.as_view()), name='create_question'),
+    path('create_answer/<int:question_id>/', views.CreateAnswerView.as_view(), name='create_answer'),
 ]

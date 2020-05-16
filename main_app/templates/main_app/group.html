@@ -7,15 +7,15 @@
         <h1>{{ group.group_name }}</h1>
         <span class="badge badge-pill badge-primary">{{ group.field_name }}</span><br>
         {% if user.is_authenticated %}
-            <a href="{% url 'ask_question' group.id %}" class="btn btn-outline-primary" id="btn-ask-question">
+            <a href="{% url 'create_question' group.id %}" class="btn btn-outline-primary" id="btn-ask-question">
                 <i class="fas fa-question"></i>
                 <span class="pl-2">Postavi pitanje</span>
             </a>
         {% else %}
             <p class="mt-2"><i class="text-secondary">
                 Da biste postavili pitanje u ovu grupu, molimo
-                <a href="{% url 'login' %}?next={% url 'ask_question' group.id %}">prijavite se</a> ili
-                <a href="{% url 'register' %}?next={% url 'ask_question' group.id %}">registrirajte</a>.
+                <a href="{% url 'login' %}?next={% url 'create_question' group.id %}">prijavite se</a> ili
+                <a href="{% url 'register' %}?next={% url 'create_question' group.id %}">registrirajte</a>.
             </i></p>
         {% endif %}
         <div class="mt-4">
