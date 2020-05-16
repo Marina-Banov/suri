@@ -69,7 +69,22 @@ img {
     transition: .3s;
     overflow: hidden;
 }
-.comment-action-container:hover {
+.comment-action-container:hover,
+.comment-action-container:focus {
     width: 50px;
     background: transparent !important;
+}
+@media screen and (max-width: 630px) {
+    .comment-action-container {
+        left: 15px;
+        top: -5px;
+        width: 48px;
+        height: 5px;
+        border-radius: 4px 4px 0 0;
+    }
+    .comment-action-container:hover,
+    .comment-action-container:focus {
+        height: 50px;
+        transform: translateY(-40px);
+    }
 }

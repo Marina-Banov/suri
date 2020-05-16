@@ -1,0 +1,19 @@
+<form method="post" action="">
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title">Obriši komentar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <p class="delete-text">Sigurno želiš obrisati ovaj komentar?</p>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss="modal">Zatvori</button>
+        <button type="submit" class="delete-btn btn btn-danger">Obriši</button>
+    </div>
+</form>

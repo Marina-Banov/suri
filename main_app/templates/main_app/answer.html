@@ -45,7 +45,8 @@
 
     {% if answer.user == user %}
         <div class="comment-action-container bg-danger">
-            <button class="btn btn-outline-danger m-1">
+            <button data-id="{% url 'delete_answer' answer.id %}?question_id={{ question.id }}"
+                    class="btn-delete-answer btn btn-outline-danger m-1">
                 <i class="far fa-trash-alt"></i>
             </button>
         </div>

@@ -10,4 +10,5 @@ urlpatterns = [
     path('question/<int:question_id>/', views.question, name='question'),
     path('create_question/<int:group_id>/', login_required(views.CreateQuestionView.as_view()), name='create_question'),
     path('create_answer/<int:question_id>/', views.CreateAnswerView.as_view(), name='create_answer'),
+    path('delete_answer/<int:pk>/', views.DeleteAnswerView.as_view(), name='delete_answer')
 ]

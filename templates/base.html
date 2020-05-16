@@ -29,6 +29,9 @@
         $(document).ready(function() {
             {% if '/question/' in request.path %}
                 $('#btn-add-comment').modalForm({ formURL: "{% url 'create_answer' question.id %}" });
+                $(".btn-delete-answer").each(function () {
+                    $(this).modalForm({ formURL: $(this).data('id') });
+                })
             {% endif %}
             $('[data-toggle="tooltip"]').tooltip()
         });

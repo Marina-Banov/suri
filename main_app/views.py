@@ -1,4 +1,4 @@
-from bootstrap_modal_forms.generic import BSModalCreateView
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalDeleteView
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 from django.shortcuts import render
@@ -69,9 +69,21 @@ class CreateQuestionView(generic.CreateView):
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': b.id}))
 
 
+class DeleteAnswerView(BSModalDeleteView):
+    model = Answer
+    template_name = 'main_app/delete_answer.html'
+    success_message = None
+
+    def get_success_url(self):
+        return reverse('question', kwargs={'question_id': self.request.GET.get('question_id')})
+
+
 class CreateAnswerView(BSModalCreateView):
     form_class = AnswerForm
     template_name = 'main_app/create_answer.html'
+
+    def form_invalid(self, form):
+        return HttpResponseRedirect(reverse('question', kwargs={'question_id': self.kwargs['question_id']}))
 
     def form_valid(self, form):
         a = Answer(
