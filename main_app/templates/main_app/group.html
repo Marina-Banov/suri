@@ -7,7 +7,7 @@
         <h1>{{ group.group_name }}</h1>
         <span class="badge badge-pill badge-primary">{{ group.field_name }}</span><br>
         {% if user.is_authenticated %}
-            <a href="{% url 'create_question' group.id %}" class="btn btn-outline-primary" id="btn-ask-question">
+            <a href="{% url 'create_question' group.id %}" class="btn btn-outline-primary btn-create-question">
                 <i class="fas fa-question"></i>
                 <span class="pl-2">Postavi pitanje</span>
             </a>

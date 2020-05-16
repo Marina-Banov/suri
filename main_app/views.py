@@ -69,13 +69,18 @@ class CreateQuestionView(generic.CreateView):
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': b.id}))
 
 
-class DeleteAnswerView(BSModalDeleteView):
-    model = Answer
-    template_name = 'main_app/delete_answer.html'
+class DeleteQuestionView(BSModalDeleteView):
+    model = Question
+    template_name = 'main_app/delete.html'
     success_message = None
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['obj'] = 'pitanje'
+        return context
+
     def get_success_url(self):
-        return reverse('question', kwargs={'question_id': self.request.GET.get('question_id')})
+        return reverse('group', kwargs={'group_id': self.request.GET.get('group_id')})
 
 
 class CreateAnswerView(BSModalCreateView):
@@ -94,6 +99,20 @@ class CreateAnswerView(BSModalCreateView):
         )
         a.save()    # TODO saves answer twice???
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': a.question.id}))
+
+
+class DeleteAnswerView(BSModalDeleteView):
+    model = Answer
+    template_name = 'main_app/delete.html'
+    success_message = None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['obj'] = 'komentar'
+        return context
+
+    def get_success_url(self):
+        return reverse('question', kwargs={'question_id': self.request.GET.get('question_id')})
 
 
 class Register(generic.CreateView):

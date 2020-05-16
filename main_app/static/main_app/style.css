@@ -26,13 +26,13 @@ main a:focus .card {
     transition: 150ms;
 }
 
-#btn-ask-question {
+.btn-create-question, .btn-delete-question {
     position: absolute;
     right: 15px;
     top: 3rem;
 }
 @media screen and (max-width: 800px) {
-    #btn-ask-question span {
+    .btn-create-question span, .btn-delete-question span {
         display: none;
     }
 }

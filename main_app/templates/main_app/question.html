@@ -5,6 +5,15 @@
 
     <main class="container py-5">
         <h2>{{ question.title }}</h2>
+
+        {% if question.user == user %}
+            <button data-id="{% url 'delete_question' question.id %}?group_id={{ question.group.id }}"
+                    class="btn btn-outline-danger btn-delete-question">
+                <i class="far fa-trash-alt"></i>
+                <span class="pl-2">Obriši pitanje</span>
+            </button>
+        {% endif %}
+
         <p class="text-secondary mb-4">
             {{ question.user }}, {{ question.date|date:'j. E Y. H:i' }}
             <br>
@@ -23,7 +32,7 @@
         {% endfor %}
 
         {% if user.is_authenticated %}
-            <button id="btn-add-comment" class="btn btn-primary">
+            <button class="btn btn-primary btn-create-answer">
                 <i class="fas fa-reply fa-rotate-180 pl-2"></i>
                 Komentiraj
             </button>
