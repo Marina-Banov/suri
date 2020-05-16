@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hr">
 <head>
     <meta charset="UTF-8">
     <title>Suri</title>
@@ -16,7 +16,7 @@
     {% endblock %}
 
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content"></div>
       </div>
     </div>
@@ -28,7 +28,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             {% if '/question/' in request.path %}
-                $('#add-comment-btn').modalForm({ formURL: "{% url 'create_answer' question.id %}" });
+                $('#btn-add-comment').modalForm({ formURL: "{% url 'create_answer' question.id %}" });
             {% endif %}
             $('[data-toggle="tooltip"]').tooltip()
         });

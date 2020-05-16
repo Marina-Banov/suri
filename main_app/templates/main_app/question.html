@@ -19,51 +19,11 @@
         </div>
 
         {% for answer in answers %}
-            <div class="card container my-4">
-            <div class="row p-4">
-                <div class="col-sm-10">
-                    <p class="text-secondary">{{ answer.user }}, {{ answer.date|date:'j. E Y. H:i' }}</p>
-                    {{ answer.description }}
-                    {% if answer.image %}<img src="{{ answer.image.url }}" alt="" class="mt-3">{% endif %}
-                </div>
-                <div class="col-sm-2 text-center" id="answer_stats">
-                    {% if user != question.user and question.accepted_answer == answer %}
-                        <i class="fas fa-star text-primary pb-3"></i>
-                    {% elif user == question.user %}
-                        <form method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="form_type" value="accept">
-                            <input type="hidden" name="answer" value="{{ answer.id }}">
-                            <button type="submit" class="btn p-0 mb-3">
-                                <i class="text-primary fa-star
-                                   {% if question.accepted_answer == answer %}
-                                        fas
-                                   {% else %}
-                                        far
-                                   {% endif %}"></i>
-                            </button>
-                        </form>
-                    {% endif %}
-                    {% if user.is_authenticated and answer.user != user %}
-                        {% include 'main_app/create_review.html' %}
-                    {% else %}
-                        <div>
-                            <button class="btn btn-light" disabled>
-                                <i class="fas fa-caret-up"></i>
-                                {{ answer.likes_count }}
-                            </button>
-                            <button class="btn btn-light" disabled>
-                                <i class="fas fa-caret-down"></i>
-                                {{ answer.dislikes_count }}
-                            </button>
-                        </div>
-                    {% endif %}
-                </div>
-            </div></div>
+            {% include 'main_app/answer.html' %}
         {% endfor %}
 
         {% if user.is_authenticated %}
-            <button id="add-comment-btn" class="btn btn-primary">
+            <button id="btn-add-comment" class="btn btn-primary">
                 <i class="fas fa-reply fa-rotate-180 pl-2"></i>
                 Komentiraj
             </button>

@@ -31,14 +31,13 @@ main a:focus .card {
     right: 15px;
     top: 3rem;
 }
-
 @media screen and (max-width: 800px) {
     #btn-ask-question span {
         display: none;
     }
 }
 
-form input[type="file"]#image {
+form input[type='file']#image {
     position: absolute;
     top: 0;
     left: 0;
@@ -47,8 +46,7 @@ form input[type="file"]#image {
     opacity: 0;
     cursor: pointer;
 }
-
-input[type=file]::-webkit-file-upload-button {
+input[type='file']::-webkit-file-upload-button {
     cursor: pointer;
 }
 
@@ -56,6 +54,22 @@ img {
     max-width: 100%;
 }
 
-#answer_stats button:disabled {
+.answer_stats button:disabled {
     opacity: 1;
+}
+
+.comment-action-container {
+    position: absolute;
+    top: 15px;
+    right: 100%;
+    height: 48px;
+    width: 5px;
+    border-radius: 4px 0 0 4px;
+    cursor: pointer;
+    transition: .3s;
+    overflow: hidden;
+}
+.comment-action-container:hover {
+    width: 50px;
+    background: transparent !important;
 }
