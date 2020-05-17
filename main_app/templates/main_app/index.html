@@ -4,14 +4,23 @@
     {% include 'header.html' %}
 
     <main class="container py-5">
+        {% if user.is_authenticated %}
+            <h3 class="mb-4">Grupe koje pratim</h3>
+            {% if subscriptions.count == 0 %}
+                <i>Zaprati grupe koje te posebno zanimaju pritiskom na zvjezdicu
+                    <i class="text-warning far fa-star mx-2"></i> u gornjem desnom kutu.
+                </i>
+            {% endif %}
+            <div class="d-grid">
+            {% for group in subscriptions %}
+                {% include 'main_app/index_group_card.html' %}
+            {% endfor %}
+            </div>
+            <h3 class="mt-5 mb-4">Sve grupe</h3>
+        {% endif %}
         <div class="d-grid">
         {% for group in all_groups %}
-            <a class="text-decoration-none text-center" href="{% url 'group' group.id %}">
-            <div class="card px-4 py-5 justify-content-center">
-                <h3>{{ group.group_name }}</h3>
-                <span class="badge badge-pill badge-primary m-2 no-underline">{{ group.field_name }}</span>
-            </div>
-            </a>
+            {% include 'main_app/index_group_card.html' %}
         {% endfor %}
         </div>
     </main>

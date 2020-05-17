@@ -10,8 +10,16 @@ from main_app.models import Group, Question, Answer, AnswerReview
 
 
 def index(request):
+    if request.method == 'POST':
+        g = Group.objects.get(id=request.POST.get('group'))
+        if request.user in g.subscribers.all():
+            g.subscribers.remove(request.user)
+        else:
+            g.subscribers.add(request.user)
+
     context = {
-        'all_groups': Group.objects.all()
+        'all_groups': Group.objects.all(),
+        'subscriptions': None if not request.user.is_authenticated else Group.objects.filter(subscribers=request.user)
     }
     return render(request, 'main_app/index.html', context)
 

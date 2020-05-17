@@ -88,3 +88,9 @@ img {
         transform: translateY(-40px);
     }
 }
+
+.subscribe-group-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
