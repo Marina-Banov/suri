@@ -4,6 +4,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('home', views.home, name='home'),
     path('', views.index, name='index'),
     path('register/', views.Register.as_view(), name='register'),
     path('group/<int:group_id>/', views.group, name='group'),

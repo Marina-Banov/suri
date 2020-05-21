@@ -1,3 +1,4 @@
+import random
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalDeleteView
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
@@ -7,6 +8,10 @@ from django.urls import reverse
 from django.views import generic
 from main_app.forms import CustomUserCreationForm, QuestionForm, AnswerForm
 from main_app.models import Group, Question, Answer, AnswerReview
+
+
+def home(request):
+    return render(request, 'main_app/landing.html', {'random_array':  random.sample(range(1, 13), 12)})
 
 
 def index(request):

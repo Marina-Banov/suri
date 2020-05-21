@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="carousel slide" data-ride="carousel" data-interval="3500">
+        <div class="carousel-inner">
+            {% load static %}
+            {% for i in random_array %}
+            {% with j=i|stringformat:'s' %}
+            {% with template='images/carousel'|add:j|add:'.jpg' %}
+            <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
+                <img class="d-block" src="{% static template %}" alt="First slide">
+            </div>
+            {% endwith %}
+            {% endwith %}
+            {% endfor %}
+        </div>
+        <div class="overlay"></div>
+    </div>
+    <div class="landing top-right d-flex justify-content-center">
+        <div class="m-4">
+        <h1>Istraži ljepote Surija,</h1>
+        <h5 class="mt-4 mb-5">najnovije platforme za suradnju studenata STEM područja</h5>
+        <p>Ovdje možeš:</p>
+        <ul>
+            <li>postavljati pitanja</li>
+            <li>pomagati kolegama</li>
+            <li>savladavati prepreke</li>
+        </ul>
+        </div>
+    </div>
+{% endblock %}

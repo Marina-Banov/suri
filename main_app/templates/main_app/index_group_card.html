@@ -3,7 +3,7 @@
     <h3>{{ group.group_name }}</h3>
     <span class="badge badge-pill badge-primary m-2 no-underline">{{ group.field_name }}</span>
     {% if user.is_authenticated %}
-    <form class="subscribe-group-container" method="post">
+    <form class="top-right" method="post">
         {% csrf_token %}
         <input type="hidden" name="group" value="{{ group.id }}">
         <button type="submit" class="btn btn-light">

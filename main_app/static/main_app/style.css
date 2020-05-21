@@ -8,6 +8,31 @@ main {
     position: relative;
 }
 
+.carousel, .carousel-item, .carousel-item img {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    position: fixed;
+    z-index: -1;
+}
+.carousel .overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.88);
+}
+
+.landing {
+    width: 100%;
+    height: 100%;
+    color: white;
+    padding-top: 10em;
+}
+.landing h1 {
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-size: 4em;
+}
+
 main .d-grid {
     display: grid;
     grid-template-rows: auto;
@@ -89,7 +114,7 @@ img {
     }
 }
 
-.subscribe-group-container {
+.top-right {
     position: absolute;
     top: 0;
     right: 0;
