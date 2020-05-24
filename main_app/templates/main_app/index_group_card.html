@@ -1,5 +1,5 @@
-<a class="text-decoration-none text-center" href="{% url 'group' group.id %}">
-<div class="card px-4 py-5 justify-content-center position-relative">
+<a class="text-decoration-none text-center h-100" href="{% url 'group' group.id %}">
+<div class="card px-4 py-5 justify-content-center position-relative h-100">
     <h3>{{ group.group_name }}</h3>
     <span class="badge badge-pill badge-primary m-2 no-underline">{{ group.field_name }}</span>
     {% if user.is_authenticated %}
