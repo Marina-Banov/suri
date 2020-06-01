@@ -2,26 +2,18 @@ main {
     position: relative;
 }
 
-.carousel, .carousel-item, .carousel-item img {
-    object-fit: cover;
-    position: fixed;
-    z-index: -1;
+main .landing, main .content {
+    padding-top: 4em !important;
 }
-.carousel .overlay {
-    background: rgba(0,0,0,.88);
-}
-
-.landing {
-    padding-top: 6em;
-}
-.landing h4, .landing img {
-    opacity: 0.7;
-}
-.landing .container:nth-of-type(1) {
+main .landing .container:nth-of-type(1) {
     margin: 4.5em 0 4em;
 }
-.landing img {
+main .landing img {
     width: 130px;
+}
+
+main .content {
+    min-height: 100vh;
 }
 
 main .d-grid {

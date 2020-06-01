@@ -1,4 +1,3 @@
-import random
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalDeleteView
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
@@ -11,10 +10,6 @@ from main_app.models import Group, Question, Answer, AnswerReview
 
 
 def index(request):
-    return render(request, 'main_app/landing.html', {'random_array':  random.sample(range(1, 13), 6)})
-
-
-def home(request):
     if request.method == 'POST':
         g = Group.objects.get(id=request.POST.get('group'))
         if request.user in g.subscribers.all():

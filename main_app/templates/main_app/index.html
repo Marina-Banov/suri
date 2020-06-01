@@ -3,7 +3,36 @@
 {% block content %}
     {% include 'header.html' %}
 
-    <main class="container py-5">
+    <main>
+    <div class="landing d-flex justify-content-center w-100">
+        <div class="mx-4 mb-5">
+        <h1 class="display-3 font-weight-bold">Istraži ljepote Surija,</h1>
+        <h4 class="mt-4 font-weight-light">najnovije platforme za suradnju studenata STEM područja</h4>
+        <div class="container">
+            <h5 class="ml-n3">Ovdje možeš:</h5>
+            <div class="row text-uppercase text-center">
+                {% load static %}
+                <div class="col-sm-4 mb-3">
+                    <img src="{% static 'images/icon1.svg' %}" alt="" class="my-3"><br>
+                    <span>postavljati pitanja</span>
+                </div>
+                <div class="col-sm-4 mb-3">
+                    <img src="{% static 'images/icon2.svg' %}" alt="" class="my-3"><br>
+                    <span>pomagati kolegama</span>
+                </div>
+                <div class="col-sm-4 mb-3">
+                    <img src="{% static 'images/icon3.svg' %}" alt="" class="my-3"><br>
+                    <span>savladavati prepreke</span>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="text-uppercase h4 scroll-button btn btn-primary">Istraži!</button>
+        </div>
+        </div>
+    </div>
+
+    <div class="container py-5 content">
         {% if user.is_authenticated %}
             <h3 class="mb-4">Grupe koje pratim</h3>
             {% if subscriptions.count == 0 %}
@@ -23,6 +52,7 @@
             {% include 'main_app/index_group_card.html' %}
         {% endfor %}
         </div>
+    </div>
     </main>
 
 {% endblock %}
