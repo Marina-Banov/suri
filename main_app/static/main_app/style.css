@@ -12,10 +12,6 @@ main .landing img {
     width: 130px;
 }
 
-main .content {
-    min-height: 100vh;
-}
-
 main .d-grid {
     display: grid;
     grid-template-rows: auto;

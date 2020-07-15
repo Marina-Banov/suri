@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div class="container py-5 content">
+    <div class="container py-5 content min-vh-100">
         {% if user.is_authenticated %}
             <h3 class="mb-4">Grupe koje pratim</h3>
             {% if subscriptions.count == 0 %}
@@ -45,7 +45,13 @@
                 {% include 'main_app/index_group_card.html' %}
             {% endfor %}
             </div>
-            <h3 class="mt-5 mb-4">Sve grupe</h3>
+            <h3 class="mt-5 mb-4">
+                Sve grupe
+                <a href="{% url 'create_group' %}" class="btn btn-outline-primary float-right">
+                    <i class="fas fa-plus"></i>
+                    <span class="pl-2">Kreiraj grupu</span>
+                </a>
+            </h3>
         {% endif %}
         <div class="d-grid">
         {% for group in all_groups %}

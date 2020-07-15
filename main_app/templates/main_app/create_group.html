@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'header.html' %}
+    <main class="container py-5">
+        <h3 class="mb-4">Kreiraj grupu</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="group_name" class="col-form-label">Ime grupe</label>
+                <input id="group_name" name="group_name" type="text"
+                       class="form-control {%if form.group_name.errors %}is-invalid{%endif%}"
+                       {% if form.group_name.value %} value="{{ form.group_name.value }}" {% endif %}/>
+                <div class="text-danger">
+                    {{ form.group_name.errors }}
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end mt-4 mb-2">
+                <a href="{% url 'index' %}">Natrag</a>
+                <button type="submit" class="btn btn-primary ml-4 px-4">Kreiraj grupu</button>
+            </div>
+        </form>
+    </main>
+{% endblock %}

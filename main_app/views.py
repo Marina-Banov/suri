@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
-from main_app.forms import CustomUserCreationForm, QuestionForm, AnswerForm
+from main_app.forms import CustomUserCreationForm, QuestionForm, AnswerForm, GroupForm
 from main_app.models import Group, Question, Answer, AnswerReview
 
 
@@ -54,6 +54,11 @@ def question(request, question_id):
         'answers': Answer.objects.filter(question_id=question_id)
     }
     return render(request, 'main_app/question.html', context)
+
+
+class CreateGroupView(generic.CreateView):
+    form_class = GroupForm
+    template_name = 'main_app/create_group.html'
 
 
 class CreateQuestionView(generic.CreateView):

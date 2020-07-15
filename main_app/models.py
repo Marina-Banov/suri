@@ -15,6 +15,7 @@ class Group(models.Model):
     field_name = models.CharField(max_length=50)
     subscribers = models.ManyToManyField(get_user_model(), related_name='subscribers')
     admin = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, related_name='admin', null=True)
+    approved = models.BooleanField()
 
     def __str__(self):
         return self.group_name + ', ' + self.field_name
