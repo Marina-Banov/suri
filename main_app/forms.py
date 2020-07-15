@@ -1,6 +1,6 @@
 from bootstrap_modal_forms.forms import BSModalForm
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.forms import ModelForm
+from django.forms import ModelForm, BooleanField
 
 from .models import User, Question, Answer, Group
 
@@ -21,9 +21,11 @@ class CustomUserChangeForm(UserChangeForm):
 
 class GroupForm(ModelForm):
 
+    admin_check = BooleanField(required=False)
+
     class Meta:
         model = Group
-        fields = ('field_name', 'group_name')
+        fields = ('field_name', 'group_name') + ('admin_check',)
 
 
 class QuestionForm(ModelForm):

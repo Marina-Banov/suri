@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from main_app.forms import CustomUserCreationForm, QuestionForm, AnswerForm, GroupForm
-from main_app.models import Group, Question, Answer, AnswerReview
+from main_app.models import Group, Question, Answer, AnswerReview, User
 
 
 def index(request):
@@ -59,6 +59,17 @@ def question(request, question_id):
 class CreateGroupView(generic.CreateView):
     form_class = GroupForm
     template_name = 'main_app/create_group.html'
+
+    def form_valid(self, form):
+        user_is_admin = self.request.user.is_superuser
+        g = Group(
+            group_name=form.cleaned_data['group_name'],
+            field_name=form.cleaned_data['field_name'],
+            admin=self.request.user if (form.cleaned_data['admin_check'] or user_is_admin) else User.objects.get(id=1),
+            approved=user_is_admin
+        )
+        g.save()
+        return HttpResponseRedirect(reverse('group', kwargs={'group_id': g.id}))
 
 
 class CreateQuestionView(generic.CreateView):

@@ -11,8 +11,28 @@ class User(AbstractUser):
 
 
 class Group(models.Model):
+    class Fields(models.TextChoices):
+        MAT = "Matematika"
+        FIZ = "Fizika"
+        KEM = "Kemija"
+        BIO = "Biologija"
+        ARH = "Arhitektura"
+        BROD = "Brodogradnja"
+        ET = "Elektrotehnika"
+        GRAD = "Građevinarstvo"
+        KEM_INZ = "Kemijsko inženjerstvo"
+        RAC = "Računarstvo"
+        STR = "Strojarstvo"
+        TEH_PROM = "Tehnologija prometa"
+        MED = "Medicina"
+        VET = "Veterina"
+        DENT = "Dentalna medicina"
+        FARM = "Farmacija"
+        BT = "Biotehnologija"
+        PT = "Prehrambena tehnologija"
+
     group_name = models.CharField(max_length=50)
-    field_name = models.CharField(max_length=50)
+    field_name = models.CharField(max_length=50, choices=Fields.choices)
     subscribers = models.ManyToManyField(get_user_model(), related_name='subscribers')
     admin = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, related_name='admin', null=True)
     approved = models.BooleanField()
