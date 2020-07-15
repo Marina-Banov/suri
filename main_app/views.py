@@ -110,19 +110,21 @@ class DeleteQuestionView(BSModalDeleteView):
 class CreateAnswerView(BSModalCreateView):
     form_class = AnswerForm
     template_name = 'main_app/create_answer.html'
+    success_message = None
 
     def form_invalid(self, form):
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': self.kwargs['question_id']}))
 
     def form_valid(self, form):
-        a = Answer(
-            question=Question.objects.get(id=self.kwargs['question_id']),
-            user=self.request.user,
-            description=form.cleaned_data['description'],
-            image=form.cleaned_data['image']
-        )
-        a.save()    # TODO saves answer twice???
-        return HttpResponseRedirect(reverse('question', kwargs={'question_id': a.question.id}))
+        if not self.request.is_ajax():
+            a = Answer(
+                question=Question.objects.get(id=self.kwargs['question_id']),
+                user=self.request.user,
+                description=form.cleaned_data['description'],
+                image=form.cleaned_data['image']
+            )
+            a.save()
+        return HttpResponseRedirect(reverse('question', kwargs={'question_id': self.kwargs['question_id']}))
 
 
 class DeleteAnswerView(BSModalDeleteView):
