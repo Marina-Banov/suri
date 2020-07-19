@@ -7,9 +7,67 @@
                 <h1 class="mb-4">Uredi profil</h1>
                 <form method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    <div class="form-group">
+                        <label for="username" class="col-form-label">Korisničko ime</label>
+                        <input id="username" name="username" type="text"
+                               class="form-control {%if form.username.errors %}is-invalid{%endif%}"
+                               value="{{ user.username }}"/>
+                        <div class="text-danger">
+                            {{ form.username.errors }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-form-label">E-mail</label>
+                        <input id="email" name="email" type="text"
+                               class="form-control {%if form.email.errors %}is-invalid{%endif%}"
+                               value="{{ user.email }}"/>
+                        <div class="text-danger">
+                            {{ form.email.errors }}
+                        </div>
+                    </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <label for="first_name" class="col-form-label">Ime</label>
+                        <input id="first_name" name="first_name" type="text"
+                               class="form-control {%if form.first_name.errors %}is-invalid{%endif%}"
+                               value="{{ user.first_name }}"/>
+                        <div class="text-danger">
+                            {{ form.first_name.errors }}
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="last_name" class="col-form-label">Prezime</label>
+                        <input id="last_name" name="last_name" type="text"
+                               class="form-control {%if form.last_name.errors %}is-invalid{%endif%}"
+                               value="{{ user.last_name }}"/>
+                        <div class="text-danger">
+                            {{ form.last_name.errors }}
+                        </div>
+                    </div>
+                </div>
+                    <div class="form-group">
+                        <label for="university" class="col-form-label">Fakultet</label>
+                        <input id="university" name="university" type="text"
+                               class="form-control {%if form.university.errors %}is-invalid{%endif%}"
+                               value="{{ user.university }}"/>
+                        <div class="text-danger">
+                            {{ form.university.errors }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-light mr-3 my-2 position-relative">
+                            Promijeni profilnu sliku
+                            <input id="image" name="image" type="file" class="top-right h-100 w-100"
+                                   onchange="document.getElementById('image-label').innerHTML = document.getElementById('image').files[0].name"/>
+                        </button>
+                        <label for="image" id="image-label"></label>
+                        <div class="text-danger">
+                            {{ form.image.errors }}
+                        </div>
+                    </div>
+                    <a href="{% url 'change_password' %}">Promijeni lozinku</a>
                     <div class="d-flex align-items-center justify-content-end mt-4 mb-2">
-                        <button type="submit" class="btn btn-primary ml-4 px-4">Registriraj se</button>
+                        <button type="submit" class="btn btn-primary ml-4 px-4">Spremi promjene</button>
                     </div>
                 </form>
             </div>
