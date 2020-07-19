@@ -38,6 +38,11 @@
                     $(this).modalForm({ formURL: $(this).data('id') });
                 })
             {% endif %}
+            {% if '/group/' in request.path %}
+                $('.btn-delete-group').each(function () {
+                    $(this).modalForm({ formURL: $(this).data('id') });
+                })
+            {% endif %}
             $('[data-toggle="tooltip"]').tooltip()
             $('.scroll-button').click(function() {
                 $('html,body').animate({

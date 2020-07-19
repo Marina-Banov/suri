@@ -30,8 +30,13 @@ main a:focus .card {
     right: 15px;
     top: 3rem;
 }
+.btn-delete-group {
+    position: absolute;
+    right: 15px;
+    top: 6rem;
+}
 @media screen and (max-width: 800px) {
-    .btn-create-question span, .btn-delete-question span {
+    .btn-create-question span, .btn-delete-question span, .btn-delete-group span {
         display: none;
     }
 }

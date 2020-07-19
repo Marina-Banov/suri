@@ -11,6 +11,13 @@
                 <i class="fas fa-question"></i>
                 <span class="pl-2">Postavi pitanje</span>
             </a>
+            {% if user == group.admin or user.is_superuser %}
+                <button data-id="{% url 'delete_group' group.id %}?group_id={{ group.id }}"
+                        class="btn btn-outline-danger btn-delete-group">
+                    <i class="far fa-trash-alt"></i>
+                    <span class="pl-2">Obriši grupu</span>
+                </button>
+            {% endif %}
         {% else %}
             <p class="mt-2"><i class="text-secondary">
                 Da biste postavili pitanje u ovu grupu, molimo

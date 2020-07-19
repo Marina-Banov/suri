@@ -51,7 +51,8 @@ def question(request, question_id):
 
     context = {
         'question': Question.objects.get(id=question_id),
-        'answers': Answer.objects.filter(question_id=question_id)
+        'answers': Answer.objects.filter(question_id=question_id),
+        'group': Question.objects.get(id=question_id).group
     }
     return render(request, 'main_app/question.html', context)
 
@@ -70,6 +71,20 @@ class CreateGroupView(generic.CreateView):
         )
         g.save()
         return HttpResponseRedirect(reverse('group', kwargs={'group_id': g.id}))
+
+
+class DeleteGroupView(BSModalDeleteView):
+    model = Group
+    template_name = 'main_app/delete.html'
+    success_message = None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['obj'] = 'grupu'
+        return context
+
+    def get_success_url(self):
+        return reverse('index')
 
 
 class CreateQuestionView(generic.CreateView):

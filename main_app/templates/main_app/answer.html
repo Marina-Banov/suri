@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    {% if answer.user == user %}
+    {% if answer.user == user or user == group.admin or user.is_superuser %}
         <div class="comment-action-container bg-danger">
             <button data-id="{% url 'delete_answer' answer.id %}?question_id={{ question.id }}"
                     class="btn-delete-answer btn btn-outline-danger m-1">
