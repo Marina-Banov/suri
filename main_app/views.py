@@ -1,11 +1,12 @@
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalDeleteView
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
-from main_app.forms import CustomUserCreationForm, QuestionForm, AnswerForm, GroupForm
+from main_app.forms import CustomUserCreationForm, CustomUserChangeForm, QuestionForm, AnswerForm, GroupForm
 from main_app.models import Group, Question, Answer, AnswerReview, User
 
 
@@ -167,3 +168,43 @@ class Register(generic.CreateView):
         user = authenticate(username=username, password=password)
         login(self.request, user)
         return HttpResponseRedirect(self.request.POST.get('next', '/'))
+
+
+@login_required()
+def update_profile(request):
+    args = {}
+
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST)
+        form.actual_user = request.user
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('update_profile_success'))
+    else:
+        form = CustomUserChangeForm()
+
+    args['form'] = form
+    return render(request, 'registration/update_profile.html', args)
+
+"""
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.userprofile)  # request.FILES is show the selected image or file
+
+        if form.is_valid() and profile_form.is_valid():
+            user_form = form.save()
+            custom_form = profile_form.save(False)
+            custom_form.user = user_form
+            custom_form.save()
+            return redirect('accounts:view_profile')
+    else:
+        form = EditProfileForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.userprofile)
+        args = {}
+        # args.update(csrf(request))
+        args['form'] = form
+        args['profile_form'] = profile_form
+        return render(request, 'accounts/edit_profile.html', args)
+"""

@@ -52,6 +52,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'suri.urls'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login'
 
 TEMPLATES = [
     {
