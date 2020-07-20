@@ -193,39 +193,19 @@ class MyPasswordChangeView(PasswordChangeView):
 
 @login_required()
 def update_profile(request):
-    args = {}
-
     if request.method == 'POST':
-        form = CustomUserChangeForm(request.POST)
+        form = CustomUserChangeForm(request.POST, instance=request.user)
         form.actual_user = request.user
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('update_profile_success'))
+            if 'image' in request.FILES:
+                request.user.image = request.FILES['image']
+                request.user.save()
+            return HttpResponseRedirect(reverse('profile', kwargs={'username': request.user.username}))
     else:
-        form = CustomUserChangeForm()
+        form = CustomUserChangeForm(instance=request.user)
 
-    args['form'] = form
-    return render(request, 'registration/update_profile.html', args)
-
-"""
-@login_required
-def edit_profile(request):
-    if request.method == 'POST':
-        form = EditProfileForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.userprofile)  # request.FILES is show the selected image or file
-
-        if form.is_valid() and profile_form.is_valid():
-            user_form = form.save()
-            custom_form = profile_form.save(False)
-            custom_form.user = user_form
-            custom_form.save()
-            return redirect('accounts:view_profile')
-    else:
-        form = EditProfileForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user.userprofile)
-        args = {}
-        # args.update(csrf(request))
-        args['form'] = form
-        args['profile_form'] = profile_form
-        return render(request, 'accounts/edit_profile.html', args)
-"""
+    context = {
+        'form': form
+    }
+    return render(request, 'registration/update_profile.html', context)

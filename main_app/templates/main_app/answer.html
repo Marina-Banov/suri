@@ -2,8 +2,20 @@
     <div class="row p-4">
 
         <div class="col-sm-10">
-            <p class="text-secondary">{{ answer.user }}, {{ answer.date|date:'j. E Y. H:i' }}</p>
-            {{ answer.description }}
+            <p class="text-secondary">
+                <a href="{% url 'profile' answer.user %}" class="text-secondary">
+                    <i class="fas fa-user"></i>
+                    {% if answer.user.first_name and answer.user.last_name %}
+                        {{ answer.user.first_name }} {{ answer.user.last_name }}
+                    {% else %}
+                        {{ answer.user }}
+                    {% endif %}
+                    {% if answer.user.university %}, {{ answer.user.university }}{% endif %}
+                </a>
+                <br>
+                {{ answer.date|date:'j. E Y. H:i' }}
+            </p>
+            <p>{{ answer.description }}</p>
             {% if answer.image %}<img src="{{ answer.image.url }}" alt="" class="mt-3">{% endif %}
         </div>
 

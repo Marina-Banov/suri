@@ -15,11 +15,21 @@
         {% endif %}
 
         <p class="text-secondary mb-4">
-            {{ question.user }}, {{ question.date|date:'j. E Y. H:i' }}
-            <br>
             <a href="{% url 'group' question.group.id %}">
                 {{ question.group }}
             </a>
+            <br>
+            <a href="{% url 'profile' question.user %}" class="text-dark">
+                <i class="fas fa-user"></i>
+                {% if question.user.first_name and question.user.last_name %}
+                    {{ question.user.first_name }} {{ question.user.last_name }}
+                {% else %}
+                    {{ question.user }}
+                {% endif %}
+                {% if question.user.university %}, {{ question.user.university }}{% endif %}
+            </a>
+            <br>
+            {{ question.date|date:'j. E Y. H:i' }}
         </p>
 
         <div class="mb-5">

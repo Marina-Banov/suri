@@ -4,11 +4,17 @@
     {% include 'header.html' %}
 
     <main class="container py-5">
-        <div style="height:200px; width:200px; background: red"></div>
-        <p>{{ profile.first_name }} {{ profile.last_name }}</p>
-        <p>{{ profile.university }}</p>
+        <img src="{% if profile.image %}{{ profile.image.url }}{% else %}{% load static %}{% static 'images/profile.png' %}{% endif %}"
+             alt=""
+             height="200px">
+        <h5 class="my-3">
+            {% if profile.first_name and profile.last_name %} {{ profile.first_name }} {{ profile.last_name }}
+            {% else %} {{ profile }} {% endif %}
+        </h5>
+        <p> Fakultet: {{ profile.university }}<br>
+            E-mail: {{ profile.email }}</p>
         {% if user == profile %}
-            <a href="{% url 'edit_profile' %}">Promijeni osobne informacije</a>
+            <a href="{% url 'edit_profile' %}">Promijeni osobne informacije</a><br>
             <a href="{% url 'change_password' %}">Promijeni lozinku</a>
         {% endif %}
     </main>
