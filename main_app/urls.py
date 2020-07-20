@@ -8,9 +8,9 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('register/', views.Register.as_view(), name='register'),
+    path('profile/<str:username>', views.profile, name='profile'),
     path('edit_profile/', views.update_profile, name='edit_profile'),
-    path('reset_password/', auth_views.PasswordResetView.as_view(), name='reset_password'), # template_name='registration/reset-password.html'
-    path('password/', auth_views.PasswordChangeView.as_view(template_name='registration/change-password.html'), name='change_password'),
+    path('password/', login_required(views.MyPasswordChangeView.as_view()), name='change_password'),
     path('group/<int:group_id>/', views.group, name='group'),
     path('question/<int:question_id>/', views.question, name='question'),
     path('create_group/', login_required(views.CreateGroupView.as_view()), name='create_group'),

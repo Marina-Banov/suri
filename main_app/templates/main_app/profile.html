@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'header.html' %}
+
+    <main class="container py-5">
+        <div style="height:200px; width:200px; background: red"></div>
+        <p>{{ profile.first_name }} {{ profile.last_name }}</p>
+        <p>{{ profile.university }}</p>
+        {% if user == profile %}
+            <a href="{% url 'edit_profile' %}">Promijeni osobne informacije</a>
+            <a href="{% url 'change_password' %}">Promijeni lozinku</a>
+        {% endif %}
+    </main>
+{% endblock %}

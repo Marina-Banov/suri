@@ -7,7 +7,7 @@
             {% endif %}
         </nav>
         {% if user.is_authenticated %}
-            <span class="mr-4">{{ user }}</span>
+            <a href="{% url 'profile' user.username %}" class="nav-link mr-2">{{ user }}</a>
             <a href="{% url 'logout' %}" class="btn btn-outline-primary mr-3">Odjava</a>
         {% else %}
             <a href="{% url 'login' %}?next={{request.path}}" class="btn btn-outline-primary">Prijava</a>

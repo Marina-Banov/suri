@@ -1,6 +1,7 @@
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalDeleteView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import PasswordChangeView
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
@@ -173,6 +174,21 @@ class Register(generic.CreateView):
         user = authenticate(username=username, password=password)
         login(self.request, user)
         return HttpResponseRedirect(self.request.POST.get('next', '/'))
+
+
+def profile(request, username):
+    context = {
+        'profile': User.objects.get(username=username)
+    }
+    return render(request, 'main_app/profile.html', context)
+
+
+class MyPasswordChangeView(PasswordChangeView):
+    template_name = 'registration/change-password.html'
+    extra_context = {'changed_password': True}
+
+    def get_success_url(self):
+        return reverse('profile', kwargs={'username': self.request.user.username})
 
 
 @login_required()
