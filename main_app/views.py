@@ -2,7 +2,7 @@ from bootstrap_modal_forms.generic import BSModalCreateView, BSModalDeleteView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
@@ -160,6 +160,11 @@ class DeleteAnswerView(BSModalDeleteView):
 class Register(generic.CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/register.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('/')
+        return super(Register, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.save()
