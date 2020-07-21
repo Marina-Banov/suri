@@ -52,7 +52,8 @@ def question(request, question_id):
         a = Answer.objects.get(id=request.POST.get('answer'))
         q.accepted_answer = None if q.accepted_answer == a else a
         q.save()
-        notify.send(sender=request.user, recipient=a.user, verb='accepted your answer', target=q)
+        if q.accepted_answer == a:
+            notify.send(sender=request.user, recipient=a.user, verb='accepted your answer', target=q)
 
     context = {
         'question': Question.objects.get(id=question_id),
@@ -82,6 +83,19 @@ class CreateGroupView(generic.CreateView):
             notify.send(sender=self.request.user, recipient=superuser, verb='želi kreirati grupu', target=g)
             messages.success(self.request, 'Administrator će ubrzo obraditi zahtjev o kreiranju ove grupe.')
             return HttpResponseRedirect(reverse('index'))
+
+
+def accept_group(request, group_id, notif_slug):
+    g = Group.objects.get(id=group_id)
+    g.approved = True
+    g.save()
+    return redirect('/notifications/delete/' + str(notif_slug) + '/?next=' + request.GET.get('next', '/'))
+
+
+def deny_group(request, group_id, notif_slug):
+    g = Group.objects.get(id=group_id)
+    g.delete()
+    return redirect('/notifications/delete/' + str(notif_slug) + '/?next=' + request.GET.get('next', '/'))
 
 
 class DeleteGroupView(BSModalDeleteView):

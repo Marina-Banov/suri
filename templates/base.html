@@ -52,6 +52,9 @@
                 }, 'medium');
             });
         });
+        $('.dropdown-item').on("click", function(e) {
+            e.stopPropagation();
+        });
     </script>
     {% if messages %}
         {% for message in messages %}

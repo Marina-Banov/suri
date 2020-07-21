@@ -16,7 +16,8 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {% if user.notifications.unread %}
                         {% for n in user.notifications.unread %}
-                            <a class="dropdown-item">{{ n }}</a>
+                            <div class="dropdown-divider"></div>
+                            {% include 'notification.html' %}
                         {% endfor %}
                     {% else %}
                         <span class="dropdown-item disabled"> Nema novih obavijesti </span>

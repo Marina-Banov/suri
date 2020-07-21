@@ -98,6 +98,8 @@ img {
     right: 0;
     left: unset;
     width: 350px;
+    overflow: auto;
+    max-height: 80vh;
 }
 
 .dropdown-item {
