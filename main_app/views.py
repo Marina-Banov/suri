@@ -10,6 +10,7 @@ from django.views import generic
 from main_app.forms import CustomUserCreationForm, CustomUserChangeForm, QuestionForm, AnswerForm, GroupForm
 from main_app.models import Group, Question, Answer, AnswerReview, User
 from notifications.signals import notify
+from django.contrib import messages
 
 
 def index(request):
@@ -21,7 +22,7 @@ def index(request):
             g.subscribers.add(request.user)
 
     context = {
-        'all_groups': Group.objects.all(),
+        'all_groups': Group.objects.filter(approved=True),
         'subscriptions': None if not request.user.is_authenticated else Group.objects.filter(subscribers=request.user)
     }
     return render(request, 'main_app/index.html', context)
@@ -67,14 +68,20 @@ class CreateGroupView(generic.CreateView):
 
     def form_valid(self, form):
         user_is_admin = self.request.user.is_superuser
+        superuser = User.objects.get(id=1)
         g = Group(
             group_name=form.cleaned_data['group_name'],
             field_name=form.cleaned_data['field_name'],
-            admin=self.request.user if (form.cleaned_data['admin_check'] or user_is_admin) else User.objects.get(id=1),
+            admin=self.request.user if (form.cleaned_data['admin_check'] or user_is_admin) else superuser,
             approved=user_is_admin
         )
         g.save()
-        return HttpResponseRedirect(reverse('group', kwargs={'group_id': g.id}))
+        if user_is_admin:
+            return HttpResponseRedirect(reverse('group', kwargs={'group_id': g.id}))
+        else:
+            notify.send(sender=self.request.user, recipient=superuser, verb='želi kreirati grupu', target=g)
+            messages.success(self.request, 'Administrator će ubrzo obraditi zahtjev o kreiranju ove grupe.')
+            return HttpResponseRedirect(reverse('index'))
 
 
 class DeleteGroupView(BSModalDeleteView):

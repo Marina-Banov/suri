@@ -97,4 +97,9 @@ img {
 .dropdown-menu.show {
     right: 0;
     left: unset;
+    width: 350px;
+}
+
+.dropdown-item {
+    white-space: normal;
 }

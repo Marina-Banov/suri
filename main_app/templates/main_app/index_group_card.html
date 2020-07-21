@@ -2,7 +2,7 @@
 <div class="card px-4 py-5 justify-content-center position-relative h-100">
     <h3>{{ group.group_name }}</h3>
     <span class="badge badge-pill badge-primary m-2 no-underline">{{ group.field_name }}</span>
-    <span class="small text-secondary">{{ group.posts_count }} rasprava</span>
+    <span class="small text-secondary">{{ group.posts_count }} rasprava, {{ group.subscribers.count }} pratitelja</span>
     {% if user.is_authenticated %}
     <form class="top-right" method="post">
         {% csrf_token %}

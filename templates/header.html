@@ -9,17 +9,17 @@
         {% if user.is_authenticated %}
             <a href="{% url 'profile' user.username %}" class="nav-link">{{ user }}</a>
             <div class="dropdown">
-                <button class="btn btn-light mr-2" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn {% if user.notifications.unread %} btn-outline-warning {% else %} btn-light {% endif %} mr-2"
+                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="far fa-bell"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {% load notifications_tags %}
-                    {% if notifications_unread == 0 %}
-                        <span class="dropdown-item disabled"> Nema novih obavijesti </span>
-                    {% else %}
+                    {% if user.notifications.unread %}
                         {% for n in user.notifications.unread %}
                             <a class="dropdown-item">{{ n }}</a>
                         {% endfor %}
+                    {% else %}
+                        <span class="dropdown-item disabled"> Nema novih obavijesti </span>
                     {% endif %}
                 </div>
             </div>
