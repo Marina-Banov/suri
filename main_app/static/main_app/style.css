@@ -93,3 +93,8 @@ img {
     top: 0;
     right: 0;
 }
+
+.dropdown-menu.show {
+    right: 0;
+    left: unset;
+}

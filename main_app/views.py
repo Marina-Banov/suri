@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.views import generic
 from main_app.forms import CustomUserCreationForm, CustomUserChangeForm, QuestionForm, AnswerForm, GroupForm
 from main_app.models import Group, Question, Answer, AnswerReview, User
+from notifications.signals import notify
 
 
 def index(request):
@@ -50,6 +51,7 @@ def question(request, question_id):
         a = Answer.objects.get(id=request.POST.get('answer'))
         q.accepted_answer = None if q.accepted_answer == a else a
         q.save()
+        notify.send(sender=request.user, recipient=a.user, verb='accepted your answer', target=q)
 
     context = {
         'question': Question.objects.get(id=question_id),

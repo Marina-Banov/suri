@@ -43,6 +43,10 @@ class Group(models.Model):
     admin = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, related_name='admin', null=True)
     approved = models.BooleanField()
 
+    @property
+    def posts_count(self):
+        return Question.objects.filter(group=self).count()
+
     def __str__(self):
         return self.group_name + ', ' + self.field_name
 

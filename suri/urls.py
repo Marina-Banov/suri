@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+import notifications.urls
 
 urlpatterns = [
     path('', include('main_app.urls')),
     path('', include('django.contrib.auth.urls')),
+    path('notifications/', include(notifications.urls, namespace='notifications')),
     path('admin/', admin.site.urls, name='admin')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
