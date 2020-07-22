@@ -12,6 +12,31 @@ class User(AbstractUser):
     image = models.FileField(upload_to='images/', blank=True, verbose_name='')
     objects = CustomUserManager()
 
+    @property
+    def questions_asked(self):
+        return Question.objects.filter(user=self).count()
+
+    @property
+    def answers_count(self):
+        return Answer.objects.filter(user=self).count()
+
+    @property
+    def accepted_count(self):
+        answers = Answer.objects.filter(user=self)
+        accepted = 0
+        for a in answers:
+            try:
+                Question.objects.get(accepted_answer=a)
+                accepted += 1
+            except Question.DoesNotExist:
+                continue
+        return accepted
+
+    @property
+    def likes_count(self):
+        answers = Answer.objects.filter(user=self)
+        return sum(a.likes_count for a in answers)
+
     def __str__(self):
         return self.username
 

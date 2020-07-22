@@ -4,18 +4,26 @@
     {% include 'header.html' %}
 
     <main class="container py-5">
-        <img src="{% if profile.image %}{{ profile.image.url }}{% else %}{% load static %}{% static 'images/profile.png' %}{% endif %}"
-             alt=""
-             height="200px">
-        <h5 class="my-3">
-            {% if profile.first_name and profile.last_name %} {{ profile.first_name }} {{ profile.last_name }}
-            {% else %} {{ profile }} {% endif %}
-        </h5>
-        <p> Fakultet: {{ profile.university }}<br>
-            E-mail: {{ profile.email }}</p>
-        {% if user == profile %}
-            <a href="{% url 'edit_profile' %}">Promijeni osobne informacije</a><br>
-            <a href="{% url 'change_password' %}">Promijeni lozinku</a>
-        {% endif %}
+        <div class="row"><div class="col-lg-3 mb-4">
+            <img src="{% if profile.image %}{{ profile.image.url }}{% else %}{% load static %}{% static 'images/profile.png' %}{% endif %}"
+                 alt=""
+                 height="200px">
+            <h5 class="my-3">
+                {% if profile.first_name and profile.last_name %} {{ profile.first_name }} {{ profile.last_name }}
+                {% else %} {{ profile }} {% endif %}
+            </h5>
+            <p> Fakultet: {{ profile.university }}<br>
+                E-mail: {{ profile.email }}</p>
+            {% if user == profile %}
+                <a href="{% url 'edit_profile' %}">Promijeni osobne informacije</a><br>
+                <a href="{% url 'change_password' %}">Promijeni lozinku</a>
+            {% endif %}
+        </div>
+        <div class="col-lg-9">
+            <h6>Ukupan broj postavljenih pitanja:</h6> <h2 class="mb-3">{{ profile.questions_asked }}</h2>
+            <h6>Ukupan broj komentara:</h6> <h2 class="mb-3">{{ profile.answers_count }}</h2>
+            <h6>Ukupan broj prihvaćenih odgovora:</h6> <h2 class="mb-3">{{ profile.accepted_count }}</h2>
+            <h6>Ukupan broj pozitivnih ocjena na komentarima:</h6> <h2 class="mb-3">{{ profile.likes_count }}</h2>
+        </div></div>
     </main>
 {% endblock %}
