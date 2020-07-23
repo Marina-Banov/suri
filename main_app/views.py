@@ -11,6 +11,7 @@ from main_app.forms import CustomUserCreationForm, CustomUserChangeForm, Questio
 from main_app.models import Group, Question, Answer, AnswerReview, User
 from notifications.signals import notify
 from django.contrib import messages
+from notifications.models import Notification
 
 
 def index(request):
@@ -38,16 +39,25 @@ def group(request, group_id):
 
 def question(request, question_id):
     if request.method == 'POST' and request.POST.get('form_type') == 'review':
+        a = Answer.objects.get(id=request.POST.get('answer'))
         r = AnswerReview(
             user=request.user,
-            answer=Answer.objects.get(id=request.POST.get('answer')),
+            answer=a,
             review=1 if 'like' in request.POST else -1
         )
         try:
             r.save()
+            if r.review == 1:
+                ns = Notification.objects.filter(recipient=a.user,
+                                                 verb='Tvoj odgovor je pozitivno ocijenjen!',
+                                                 action_object_object_id=a.id)
+                if ns.count() == 0:
+                    notify.send(sender=request.user,
+                                recipient=a.user,
+                                verb='Tvoj odgovor je pozitivno ocijenjen!',
+                                action_object=a)
         except IntegrityError:
-            AnswerReview.objects.get(user=r.user, answer=r.answer).delete()
-            # TODO notify.send
+            AnswerReview.objects.get(user=r.user, answer=a).delete()
     elif request.method == 'POST' and request.POST.get('form_type') == 'accept':
         q = Question.objects.get(id=question_id)
         a = Answer.objects.get(id=request.POST.get('answer'))
@@ -86,22 +96,31 @@ class CreateGroupView(generic.CreateView):
             return HttpResponseRedirect(reverse('index'))
 
 
-def accept_group(request, group_id, notif_slug):
+def accept_group(request, group_id, notif_id):
     g = Group.objects.get(id=group_id)
     g.approved = True
     g.save()
     m = 'Grupa ' + str(g) + ' je vidljiva na Suri naslovnoj stranici! Administrator: ' + str(g.admin)
     messages.success(request, m)
-    # TODO notify.send
-    return redirect('/notifications/delete/' + str(notif_slug) + '/?next=' + request.GET.get('next', '/'))
+    create_group_notification = Notification.objects.get(id=notif_id)
+    notify.send(sender=request.user,
+                recipient=create_group_notification.actor,
+                verb='je prihvatio tvoj zahtjev za kreiranje grupe',
+                target=g)
+    return redirect(
+        '/notifications/delete/' + str(create_group_notification.slug) + '/?next=' + request.GET.get('next', '/'))
 
 
-def deny_group(request, group_id, notif_slug):
+def deny_group(request, group_id, notif_id):
     g = Group.objects.get(id=group_id)
     g.delete()
     messages.warning(request, 'Grupa ' + str(g) + ' je obrisana!')
-    # TODO notify.send
-    return redirect('/notifications/delete/' + str(notif_slug) + '/?next=' + request.GET.get('next', '/'))
+    create_group_notification = Notification.objects.get(id=notif_id)
+    notify.send(sender=request.user,
+                recipient=create_group_notification.actor,
+                verb='nije prihvatio tvoj zahtjev za kreiranje grupe ' + str(g))
+    return redirect(
+        '/notifications/delete/' + str(create_group_notification.slug) + '/?next=' + request.GET.get('next', '/'))
 
 
 class DeleteGroupView(BSModalDeleteView):
@@ -129,16 +148,23 @@ class CreateQuestionView(generic.CreateView):
         return context
 
     def form_valid(self, form):
-        b = Question(
-            group=Group.objects.get(id=self.kwargs['group_id']),
+        g = Group.objects.get(id=self.kwargs['group_id'])
+        q = Question(
+            group=g,
             user=self.request.user,
             title=form.cleaned_data['title'],
             description=form.cleaned_data['description'],
             image=form.cleaned_data['image']
         )
-        b.save()
-        # TODO notify.send to subscribers
-        return HttpResponseRedirect(reverse('question', kwargs={'question_id': b.id}))
+        q.save()
+        ns = Notification.objects.filter(verb='Ima novih pitanja u grupi',
+                                         target_object_id=g.id)
+        if ns.count() == 0:
+            notify.send(sender=self.request.user,
+                        recipient=[s for s in g.subscribers.exclude(id=self.request.user.id)],
+                        verb='Ima novih pitanja u grupi',
+                        target=g)
+        return HttpResponseRedirect(reverse('question', kwargs={'question_id': q.id}))
 
 
 class DeleteQuestionView(BSModalDeleteView):
@@ -166,14 +192,21 @@ class CreateAnswerView(BSModalCreateView):
 
     def form_valid(self, form):
         if not self.request.is_ajax():
+            q = Question.objects.get(id=self.kwargs['question_id'])
             a = Answer(
-                question=Question.objects.get(id=self.kwargs['question_id']),
+                question=q,
                 user=self.request.user,
                 description=form.cleaned_data['description'],
                 image=form.cleaned_data['image']
             )
             a.save()
-            # TODO notify.send
+            ns = Notification.objects.filter(verb='Ima novih odgovora na tvoje pitanje',
+                                             target_object_id=q.id)
+            if ns.count() == 0 and self.request.user != q.user:
+                notify.send(sender=self.request.user,
+                            recipient=q.user,
+                            verb='Ima novih odgovora na tvoje pitanje',
+                            target=q)
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': self.kwargs['question_id']}))
 
 

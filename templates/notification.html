@@ -5,11 +5,11 @@
     <div class="d-flex justify-content-end align-items-center">
     {% if n.verb == 'želi kreirati grupu' %}
         Odobri?
-        <a href="{% url 'accept_group' n.target.id n.slug %}?next={{request.path}}"
+        <a href="{% url 'accept_group' n.target.id n.id %}?next={{request.path}}"
            class="btn btn-success btn-sm ml-3">
             Da
         </a>
-        <a href="{% url 'deny_group' n.target.id n.slug %}?next={{request.path}}"
+        <a href="{% url 'deny_group' n.target.id n.id %}?next={{request.path}}"
            class="btn btn-danger btn-sm ml-2">
             Ne
         </a>
