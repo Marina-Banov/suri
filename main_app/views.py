@@ -50,12 +50,12 @@ def question(request, question_id):
             if r.review == 1:
                 ns = Notification.objects.filter(recipient=a.user,
                                                  verb='Tvoj odgovor je pozitivno ocijenjen!',
-                                                 action_object_object_id=a.id)
+                                                 target_object_id=a.question.id)
                 if ns.count() == 0:
                     notify.send(sender=request.user,
                                 recipient=a.user,
-                                verb='Tvoj odgovor je pozitivno ocijenjen!',
-                                action_object=a)
+                                verb='Tvoj odgovor je pozitivno ocijenjen',
+                                target=a.question)
         except IntegrityError:
             AnswerReview.objects.get(user=r.user, answer=a).delete()
     elif request.method == 'POST' and request.POST.get('form_type') == 'accept':
@@ -64,7 +64,7 @@ def question(request, question_id):
         q.accepted_answer = None if q.accepted_answer == a else a
         q.save()
         if q.accepted_answer == a:
-            notify.send(sender=request.user, recipient=a.user, verb='accepted your answer', target=q)
+            notify.send(sender=request.user, recipient=a.user, verb='je prihvatio/la tvoj odgovor', target=q)
 
     context = {
         'question': Question.objects.get(id=question_id),

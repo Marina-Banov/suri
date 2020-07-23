@@ -17,7 +17,9 @@
                     {% if user.notifications.unread %}
                         {% for n in user.notifications.unread %}
                             <div class="dropdown-divider"></div>
-                            {% include 'notification.html' %}
+                            <div class="dropdown-item">
+                                {% include 'notification.html' %}
+                            </div>
                         {% endfor %}
                     {% else %}
                         <span class="dropdown-item disabled"> Nema novih obavijesti </span>

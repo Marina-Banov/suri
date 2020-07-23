@@ -1,20 +1,29 @@
-<div class="dropdown-item">
-    {{ n.actor }} {{ n.verb }} {{ n.target }}
-    <br>
-    <p class="small text-secondary my-2">{{ n.timestamp }}</p>
-    <div class="d-flex justify-content-end align-items-center">
-    {% if n.verb == 'želi kreirati grupu' %}
-        Odobri?
-        <a href="{% url 'accept_group' n.target.id n.id %}?next={{request.path}}"
-           class="btn btn-success btn-sm ml-3">
-            Da
-        </a>
-        <a href="{% url 'deny_group' n.target.id n.id %}?next={{request.path}}"
-           class="btn btn-danger btn-sm ml-2">
-            Ne
-        </a>
-    {% else %}
-        <a href="{% url 'notifications:delete' n.slug %}?next={{request.path}}">Obriši</a>
-    {% endif %}
-    </div>
+{% if n.verb == 'Tvoj odgovor je pozitivno ocijenjen' %}
+    Tvoj <a href="{% url 'question' n.target_object_id %}">odgovor</a> je pozitino ocijenjen!
+{% elif n.verb == 'Ima novih pitanja u grupi' %}
+    Ima novih pitanja u grupi <a href="{% url 'group' n.target_object_id %}">{{ n.target }}</a>!
+{% elif n.verb == 'Ima novih odgovora na tvoje pitanje' %}
+    Ima novih odgovora na tvoje <a href="{% url 'question' n.target_object_id %}">pitanje</a>!
+{% elif n.verb == 'je prihvatio/la tvoj odgovor' %}
+    {{ n.actor }} je prihvatio/la tvoj <a href="{% url 'question' n.target_object_id %}">odgovor</a>!
+{% else %}
+    {{ n.actor }} {{ n.verb }}{% if n.target is not None %} {{ n.target }}{% endif %}.
+{% endif %}
+
+<p class="small text-secondary my-2">{{ n.timestamp }}</p>
+
+<div class="d-flex justify-content-end align-items-center">
+{% if n.verb == 'želi kreirati grupu' %}
+    Odobri?
+    <a href="{% url 'accept_group' n.target.id n.id %}?next={{request.path}}"
+       class="btn btn-success btn-sm ml-3">
+        Da
+    </a>
+    <a href="{% url 'deny_group' n.target.id n.id %}?next={{request.path}}"
+       class="btn btn-danger btn-sm ml-2">
+        Ne
+    </a>
+{% else %}
+    <a href="{% url 'notifications:delete' n.slug %}?next={{request.path}}">Obriši</a>
+{% endif %}
 </div>
