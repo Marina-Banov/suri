@@ -47,6 +47,7 @@ def question(request, question_id):
             r.save()
         except IntegrityError:
             AnswerReview.objects.get(user=r.user, answer=r.answer).delete()
+            # TODO notify.send
     elif request.method == 'POST' and request.POST.get('form_type') == 'accept':
         q = Question.objects.get(id=question_id)
         a = Answer.objects.get(id=request.POST.get('answer'))
@@ -89,12 +90,17 @@ def accept_group(request, group_id, notif_slug):
     g = Group.objects.get(id=group_id)
     g.approved = True
     g.save()
+    m = 'Grupa ' + str(g) + ' je vidljiva na Suri naslovnoj stranici! Administrator: ' + str(g.admin)
+    messages.success(request, m)
+    # TODO notify.send
     return redirect('/notifications/delete/' + str(notif_slug) + '/?next=' + request.GET.get('next', '/'))
 
 
 def deny_group(request, group_id, notif_slug):
     g = Group.objects.get(id=group_id)
     g.delete()
+    messages.warning(request, 'Grupa ' + str(g) + ' je obrisana!')
+    # TODO notify.send
     return redirect('/notifications/delete/' + str(notif_slug) + '/?next=' + request.GET.get('next', '/'))
 
 
@@ -109,6 +115,7 @@ class DeleteGroupView(BSModalDeleteView):
         return context
 
     def get_success_url(self):
+        messages.warning(self.request, 'Grupa je obrisana!')
         return reverse('index')
 
 
@@ -130,6 +137,7 @@ class CreateQuestionView(generic.CreateView):
             image=form.cleaned_data['image']
         )
         b.save()
+        # TODO notify.send to subscribers
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': b.id}))
 
 
@@ -144,6 +152,7 @@ class DeleteQuestionView(BSModalDeleteView):
         return context
 
     def get_success_url(self):
+        messages.warning(self.request, 'Pitanje je obrisano!')
         return reverse('group', kwargs={'group_id': self.request.GET.get('group_id')})
 
 
@@ -164,6 +173,7 @@ class CreateAnswerView(BSModalCreateView):
                 image=form.cleaned_data['image']
             )
             a.save()
+            # TODO notify.send
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': self.kwargs['question_id']}))
 
 
@@ -178,6 +188,7 @@ class DeleteAnswerView(BSModalDeleteView):
         return context
 
     def get_success_url(self):
+        messages.warning(self.request, 'Odgovor je obrisan!')
         return reverse('question', kwargs={'question_id': self.request.GET.get('question_id')})
 
 
@@ -196,6 +207,7 @@ class Register(generic.CreateView):
         password = self.request.POST['password1']
         user = authenticate(username=username, password=password)
         login(self.request, user)
+        # TODO messages.success OR messages.error
         return HttpResponseRedirect(self.request.POST.get('next', '/'))
 
 
@@ -211,6 +223,7 @@ class MyPasswordChangeView(PasswordChangeView):
     extra_context = {'changed_password': True}
 
     def get_success_url(self):
+        messages.success(self.request, 'Lozinka je uspješno promijenjena!')
         return reverse('profile', kwargs={'username': self.request.user.username})
 
 
@@ -224,7 +237,10 @@ def update_profile(request):
             if 'image' in request.FILES:
                 request.user.image = request.FILES['image']
                 request.user.save()
+            messages.success(request, 'Osobne informacije uspješno promijenjene!')
             return HttpResponseRedirect(reverse('profile', kwargs={'username': request.user.username}))
+        else:
+            messages.error(request, 'Došlo je do pogreške!')
     else:
         form = CustomUserChangeForm(instance=request.user)
 

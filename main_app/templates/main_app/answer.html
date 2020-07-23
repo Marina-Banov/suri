@@ -6,11 +6,8 @@
                 <a href="{% url 'profile' answer.user %}" class="text-secondary">
                     <i class="fas fa-user"></i>
                     {% if answer.user.first_name and answer.user.last_name %}
-                        {{ answer.user.first_name }} {{ answer.user.last_name }}
-                    {% else %}
-                        {{ answer.user }}
-                    {% endif %}
-                    {% if answer.user.university %}, {{ answer.user.university }}{% endif %}
+                        {{ answer.user.first_name }} {{ answer.user.last_name }}{% else %}
+                        {{ answer.user }}{% endif %}{% if answer.user.university %}, {{ answer.user.university }}{% endif %}
                 </a>
                 <br>
                 {{ answer.date|date:'j. E Y. H:i' }}
@@ -60,12 +57,6 @@
             <button data-id="{% url 'delete_answer' answer.id %}?question_id={{ question.id }}"
                     class="btn-delete-answer btn btn-outline-danger m-1">
                 <i class="far fa-trash-alt"></i>
-            </button>
-        </div>
-    {% elif user.is_authenticated %}
-        <div class="comment-action-container bg-warning">
-            <button class="btn btn-outline-warning m-1">
-                <i class="fas fa-exclamation-triangle"></i>
             </button>
         </div>
     {% endif %}
