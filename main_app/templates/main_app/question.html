@@ -6,7 +6,7 @@
     <main class="container py-5">
         <h2>{{ question.title }}</h2>
 
-        {% if question.user == user %}
+        {% if question.user == user or group.admin == user or user.is_superuser %}
             <button data-id="{% url 'delete_question' question.id %}?group_id={{ question.group.id }}"
                     class="btn btn-outline-danger btn-delete-question">
                 <i class="far fa-trash-alt"></i>
