@@ -49,7 +49,7 @@ def question(request, question_id):
             r.save()
             if r.review == 1:
                 ns = Notification.objects.filter(recipient=a.user,
-                                                 verb='Tvoj odgovor je pozitivno ocijenjen!',
+                                                 verb='Tvoj odgovor je pozitivno ocijenjen',
                                                  target_object_id=a.question.id)
                 if ns.count() == 0:
                     notify.send(sender=request.user,
