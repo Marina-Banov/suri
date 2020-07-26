@@ -1,6 +1,15 @@
+import os
+from uuid import uuid4
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser, UserManager
+
+
+def update_filename(prefix):
+    def wrapper(instance, filename):
+        return os.path.join('images/', '{}_{}.{}'.format(prefix, uuid4().hex, filename.split('.')[-1]))
+
+    return wrapper
 
 
 class CustomUserManager(UserManager):
@@ -9,7 +18,7 @@ class CustomUserManager(UserManager):
 
 class User(AbstractUser):
     university = models.CharField(max_length=200, blank=True)
-    image = models.FileField(upload_to='images/', blank=True, verbose_name='')
+    image = models.FileField(upload_to=update_filename('u'), blank=True, verbose_name='')
     objects = CustomUserManager()
 
     @property
@@ -84,7 +93,7 @@ class Question(models.Model):
     description = models.CharField(max_length=2048, null=True)
     # the images themselves aren't saved to the database, just the pathway to the image
     # the images are stored in the media directory of the project
-    image = models.FileField(upload_to='images/', null=True, blank=True, verbose_name='')
+    image = models.FileField(upload_to=update_filename('q'), null=True, blank=True, verbose_name='')
     accepted_answer = models.ForeignKey('Answer', on_delete=models.SET_NULL, null=True, related_name='accepted_answer')
 
     def __str__(self):
@@ -96,7 +105,7 @@ class Answer(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True)
     date = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=2048)
-    image = models.FileField(upload_to='images/', null=True, blank=True, verbose_name='')
+    image = models.FileField(upload_to=update_filename('a'), null=True, blank=True, verbose_name='')
 
     @property
     def likes_count(self):
