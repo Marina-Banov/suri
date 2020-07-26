@@ -130,8 +130,8 @@ LOCALE_PATHS = (
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'static/bootstrap-4.3.1-css'),
     os.path.join(BASE_DIR, 'static/fontawesome-free-5.13.0-web'),
     os.path.join(BASE_DIR, 'static/js')
