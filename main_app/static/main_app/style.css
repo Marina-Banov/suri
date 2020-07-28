@@ -42,10 +42,11 @@ main a:focus .card {
 }
 
 form input[type='file']#image {
-    opacity: 0;
-    cursor: pointer;
+    width: 0;
+    height: 0;
 }
-input[type='file']::-webkit-file-upload-button {
+
+.cursor-pointer {
     cursor: pointer;
 }
 

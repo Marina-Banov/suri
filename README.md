@@ -14,6 +14,7 @@ and run the following command in the same folder: `python get-pip.py`)
 pip install Django
 pip install django-notifications-hq
 pip install django-bootstrap-modal-forms
+pip install django-cleanup
 ```
 
 ### Starting the server

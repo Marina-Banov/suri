@@ -154,7 +154,7 @@ class CreateQuestionView(generic.CreateView):
             user=self.request.user,
             title=form.cleaned_data['title'],
             description=form.cleaned_data['description'],
-            image=form.cleaned_data['image']
+            image=self.request.FILES.get('image')
         )
         q.save()
         ns = Notification.objects.filter(verb='Ima novih pitanja u grupi',
@@ -188,6 +188,7 @@ class CreateAnswerView(BSModalCreateView):
     success_message = None
 
     def form_invalid(self, form):
+        messages.error(self.request, 'Došlo je do pogreške prilikom komentiranja objave!')
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': self.kwargs['question_id']}))
 
     def form_valid(self, form):
@@ -197,7 +198,7 @@ class CreateAnswerView(BSModalCreateView):
                 question=q,
                 user=self.request.user,
                 description=form.cleaned_data['description'],
-                image=form.cleaned_data['image']
+                image=self.request.FILES.get('image')
             )
             a.save()
             ns = Notification.objects.filter(verb='Ima novih odgovora na tvoje pitanje',

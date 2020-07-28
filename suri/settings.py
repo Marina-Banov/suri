@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap_modal_forms',
-    'notifications'
+    'notifications',
+    'django_cleanup'
 ]
 
 MIDDLEWARE = [
