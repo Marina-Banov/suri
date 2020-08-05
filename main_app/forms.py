@@ -1,6 +1,6 @@
-from bootstrap_modal_forms.forms import BSModalForm
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.forms import ModelForm, BooleanField
+from bootstrap_modal_forms.forms import BSModalModelForm
 
 from .models import User, Question, Answer, Group
 
@@ -35,7 +35,7 @@ class QuestionForm(ModelForm):
         fields = ('title', 'description', 'image')
 
 
-class AnswerForm(BSModalForm):
+class AnswerForm(BSModalModelForm):
 
     class Meta:
         model = Answer
