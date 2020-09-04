@@ -6,9 +6,9 @@ from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.views import generic
-from main_app.forms import CustomUserCreationForm, CustomUserChangeForm, QuestionForm, AnswerForm, GroupForm
-from main_app.models import Group, Question, Answer, AnswerReview, User
+from django.views.generic import CreateView
+from .forms import CustomUserCreationForm, CustomUserChangeForm, QuestionForm, AnswerForm, GroupForm
+from .models import Group, Question, Answer, AnswerReview, User
 from notifications.signals import notify
 from django.contrib import messages
 from notifications.models import Notification
@@ -48,10 +48,8 @@ def question(request, question_id):
         try:
             r.save()
             if r.review == 1:
-                ns = Notification.objects.filter(recipient=a.user,
-                                                 verb='Tvoj odgovor je pozitivno ocijenjen',
-                                                 target_object_id=a.question.id)
-                if ns.count() == 0:
+                if a.user.notifications.filter(verb='Tvoj odgovor je pozitivno ocijenjen',
+                                               target_object_id=a.question.id).count() == 0:
                     notify.send(sender=request.user,
                                 recipient=a.user,
                                 verb='Tvoj odgovor je pozitivno ocijenjen',
@@ -74,7 +72,7 @@ def question(request, question_id):
     return render(request, 'main_app/question.html', context)
 
 
-class CreateGroupView(generic.CreateView):
+class CreateGroup(CreateView):
     form_class = GroupForm
     template_name = 'main_app/create_group.html'
 
@@ -123,7 +121,7 @@ def deny_group(request, group_id, notif_id):
         '/notifications/delete/' + str(create_group_notification.slug) + '/?next=' + request.GET.get('next', '/'))
 
 
-class DeleteGroupView(BSModalDeleteView):
+class DeleteGroup(BSModalDeleteView):
     model = Group
     template_name = 'main_app/delete.html'
     success_message = None
@@ -138,7 +136,7 @@ class DeleteGroupView(BSModalDeleteView):
         return reverse('index')
 
 
-class CreateQuestionView(generic.CreateView):
+class CreateQuestion(CreateView):
     form_class = QuestionForm
     template_name = 'main_app/create_question.html'
 
@@ -157,17 +155,17 @@ class CreateQuestionView(generic.CreateView):
             image=self.request.FILES.get('image')
         )
         q.save()
-        ns = Notification.objects.filter(verb='Ima novih pitanja u grupi',
-                                         target_object_id=g.id)
-        if ns.count() == 0:
-            notify.send(sender=self.request.user,
-                        recipient=[s for s in g.subscribers.exclude(id=self.request.user.id)],
-                        verb='Ima novih pitanja u grupi',
-                        target=g)
+        for s in g.subscribers.exclude(id=self.request.user.id):
+            if s.notifications.filter(verb='Ima novih pitanja u grupi',
+                                      target_object_id=g.id).count() == 0:
+                notify.send(sender=self.request.user,
+                            recipient=s,
+                            verb='Ima novih pitanja u grupi',
+                            target=g)
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': q.id}))
 
 
-class DeleteQuestionView(BSModalDeleteView):
+class DeleteQuestion(BSModalDeleteView):
     model = Question
     template_name = 'main_app/delete.html'
     success_message = None
@@ -182,7 +180,7 @@ class DeleteQuestionView(BSModalDeleteView):
         return reverse('group', kwargs={'group_id': self.request.GET.get('group_id')})
 
 
-class CreateAnswerView(BSModalCreateView):
+class CreateAnswer(BSModalCreateView):
     form_class = AnswerForm
     template_name = 'main_app/create_answer.html'
     success_message = None
@@ -211,7 +209,7 @@ class CreateAnswerView(BSModalCreateView):
         return HttpResponseRedirect(reverse('question', kwargs={'question_id': self.kwargs['question_id']}))
 
 
-class DeleteAnswerView(BSModalDeleteView):
+class DeleteAnswer(BSModalDeleteView):
     model = Answer
     template_name = 'main_app/delete.html'
     success_message = None
@@ -226,7 +224,7 @@ class DeleteAnswerView(BSModalDeleteView):
         return reverse('question', kwargs={'question_id': self.request.GET.get('question_id')})
 
 
-class Register(generic.CreateView):
+class Register(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/register.html'
 
@@ -252,7 +250,7 @@ def profile(request, username):
     return render(request, 'main_app/profile.html', context)
 
 
-class MyPasswordChangeView(PasswordChangeView):
+class PasswordChange(PasswordChangeView):
     template_name = 'registration/change-password.html'
     extra_context = {'changed_password': True}
 

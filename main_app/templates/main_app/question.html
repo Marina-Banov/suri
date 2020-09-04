@@ -39,7 +39,8 @@
         {% endfor %}
 
         {% if user.is_authenticated %}
-            <button class="btn btn-primary btn-create-answer">
+            <button data-id="{% url 'create_answer' question.id %}"
+                    class="btn btn-primary btn-create-answer">
                 <i class="fas fa-reply fa-rotate-180 pl-2"></i>
                 Komentiraj
             </button>

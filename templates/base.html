@@ -30,31 +30,21 @@
     <script src="{% static 'toastr.min.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            {% if '/question/' in request.path %}
-                $('.btn-create-answer').each(function () {
-                    $(this).modalForm({ formURL: "{% url 'create_answer' question.id %}" });
-                });
-                $(".btn-delete-answer").each(function () {
-                    $(this).modalForm({ formURL: $(this).data('id') });
-                })
-                $('.btn-delete-question').each(function () {
-                    $(this).modalForm({ formURL: $(this).data('id') });
-                })
-            {% endif %}
-            {% if '/group/' in request.path %}
-                $('.btn-delete-group').each(function () {
-                    $(this).modalForm({ formURL: $(this).data('id') });
-                })
-            {% endif %}
-            $('[data-toggle="tooltip"]').tooltip()
+            $('.btn-create-answer, .btn-delete-answer, .btn-delete-question, .btn-delete-group').each(function () {
+                $(this).modalForm({ formURL: $(this).data('id') });
+            });
+
+            $('[data-toggle="tooltip"]').tooltip();
+
             $('.scroll-button').click(function() {
                 $('html,body').animate({
                     scrollTop: $('.content').offset().top
                 }, 'medium');
             });
-        });
-        $('.dropdown-item').on("click", function(e) {
-            e.stopPropagation();
+
+            $('.dropdown-item').on("click", function(e) {
+                e.stopPropagation();
+            });
         });
     </script>
     {% if messages %}
